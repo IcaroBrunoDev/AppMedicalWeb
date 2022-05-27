@@ -1,0 +1,186 @@
+#calendar-card {
+  overflow-x: scroll;
+}
+
+.arrow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin: 0 0.3rem;
+
+  background-color: $white;
+  border: 0.5px solid $gray-300;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 100%;
+  cursor: pointer;
+  color: $medical;
+
+  &:hover {
+    color: $white;
+    background-color: $medical;
+  }
+
+  i {
+    font-size: 1rem;
+  }
+}
+
+.calendar-marker {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: start;
+  align-items: center;
+  font-size: 0.8rem;
+  cursor: pointer;
+  
+
+  &:hover {
+    background-color: $gray-200;
+  }
+
+  & div:nth-child(1) i {
+    font-size: 0.4rem;
+  }
+}
+
+.month_calendar_table {
+  table {
+    width: 100%;
+    overflow-x: scroll;
+    border-left: 1px solid $gray-400;
+
+    thead {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+
+      th {
+        text-align: center;
+        padding: 0.6rem 0;
+        width: calc(100% / 7);
+        min-width: 150px;
+        border-top: 1px solid $gray-400;
+        border-right: 1px solid $gray-400;
+        border-bottom: 1px solid $gray-400;
+        font-weight: normal;
+        font-size: 15px;
+        color: $medical;
+        background-color: $gray-100;
+
+        @media screen and (max-width: 767px) {
+          margin: 0rem 0rem;
+        }
+      }
+    }
+
+    tbody {
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+
+      .empty-td {
+        background-color: $gray-100;
+      }
+
+      td {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        padding-top: 0.6rem;
+        width: calc(100% / 7);
+        min-width: 150px;
+        min-height: 8rem;
+        border-right: 1px solid $gray-400;
+        border-bottom: 1px solid $gray-400;
+        cursor: pointer;
+
+        .active {
+          span {
+            font-size: 14px;
+          }
+
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background-color: $medical;
+          width: 25px;
+          height: 25px;
+          align-self: center !important;
+          color: $white;
+
+          border-radius: 100%;
+        }
+      }
+    }
+  }
+}
+
+.users-results {
+  width: calc(100% - 2%);
+  max-height: 250px;
+  padding-bottom: 1rem;
+  background: $white;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  position: absolute;
+  z-index: 999;
+  border: 1px solid $gray-400;
+
+  .cards {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid $medical;
+    padding-top: 0.7rem;
+    padding-bottom: 0.7rem;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $gray-200;
+    }
+    span {
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
+
+    img {
+      width: 2rem;
+      height: 2rem;
+    }
+  }
+
+  #close-span {
+    font-size: 0.8rem;
+    color: $gray-600;
+    cursor: pointer;
+
+    &:hover {
+      color: $medical;
+    }
+  }
+}
+
+/* width */
+.users-results::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+.users-results::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Handle */
+.users-results::-webkit-scrollbar-thumb {
+  background: $gray-200;
+}
+
+/* Handle on hover */
+.users-results::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

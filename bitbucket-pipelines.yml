@@ -1,0 +1,25 @@
+image: node:16
+
+pipelines:
+  default:
+    - step:
+        caches:
+          - node
+        script:
+          - npm install
+          - npm run build
+          - npm pack
+  branches:
+    staging:
+      - step:
+          caches:
+            - node
+          script:
+            - npm install
+            - npm run build
+            - npm pack
+            - pipe: atlassian/heroku-deploy:1.2.1
+              variables:
+                HEROKU_API_KEY: $HEROKU_API_KEY
+                HEROKU_APP_NAME: "app-medico-staging"
+                ZIP_FILE: "app-medico-1.0.0.tgz"

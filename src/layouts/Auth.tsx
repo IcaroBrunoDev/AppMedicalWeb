@@ -1,48 +1,15 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 
-import {
-  Container,
-  Button,
-  Card,
-  CardBody,
-  FormGroup,
-  Form,
-  Input,
-  InputGroupAddon,
-  InputGroupText,
-  InputGroup,
-  Row,
-  Col,
-  Spinner,
-} from "reactstrap";
-
-import { Credentials } from "../interfaces/Sign";
-
-import api from "../utils/axios";
-import { usePropsContext } from "../index";
-import { storageProfile, storageSessionToken } from "../utils/caches";
-import {
-  AlertType,
-  AwaitedApiProfile,
-  AwaitedApiToken,
-} from "../interfaces/General";
-import { ExceptionMessages } from "../utils/messages";
-import { decodeExceptionObject } from "../utils/helpers";
+import { Container, Card, CardBody, Row, Col } from "reactstrap";
 
 import SignForm from "../components/SingIn/SingInForm";
-import axios from "../utils/axios";
 
-enum Provider {
-  admin_nurse = "admin_nurse",
-  specialized_doctor = "doctor",
-}
+
 
 export default function Auth() {
   const location = useLocation();
   const mainContent = React.useRef<HTMLDivElement>(null);
-
-  const { showAlert }: any = usePropsContext();
 
   React.useEffect(() => {
     if (mainContent.current) {
@@ -50,7 +17,6 @@ export default function Auth() {
       mainContent.current.scrollTop = 0;
     }
   }, [location]);
-
 
   return (
     <div className="main-content bg-white" ref={mainContent}>

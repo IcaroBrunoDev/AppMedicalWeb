@@ -5,11 +5,14 @@ export interface CreateDoctorProps {
 }
 
 export interface Doctor {
-  email: string | null;
-  fullname: string | null;
-  cpf: string | null;
-  crm: string | null;
-  phone: string | null;
-  specialty: string | any;
-  main_attendance_location: string | null;
+  id: string;
+  fullname: string;
+  email: string;
+  crm: string;
+  cpf: string;
+  phone: string;
+  specialty?: string | any;
+  profile_picture: string;
+  created_at: Date;
+  updated_at: Date;
 }

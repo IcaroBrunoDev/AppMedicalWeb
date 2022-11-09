@@ -1,6 +1,6 @@
 /** @type {Object} */
 export interface Credentials {
-  authenticator: string;
+  email: string;
   password: string;
 }
 

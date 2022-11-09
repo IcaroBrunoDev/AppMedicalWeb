@@ -22,13 +22,16 @@ import {
   Row,
   Col,
 } from "reactstrap";
+import { useAuth } from "../../context/AuthProvider";
 
 import { NavbarBrandType, SidebarProps } from "../../interfaces/Sidebar";
 
-import { clearAllCaches, getStoragedProfile } from "../../utils/caches";
-
 export default function Sidebar({ logo, routes }: SidebarProps) {
-  const { profile_picture } = getStoragedProfile();
+  const auth = useAuth();
+
+  console.log(auth.profile);
+
+  const profile_picture = "";
 
   const [collapseOpen, setCollapseOpen] = React.useState<boolean>();
   const [navbarBrandProps, setNavbarBrandProps] =
@@ -60,9 +63,8 @@ export default function Sidebar({ logo, routes }: SidebarProps) {
     setCollapseOpen(false);
   };
 
-  const signOut = () => {
-    clearAllCaches();
-    window.location.href = "/";
+  const signOut = async () => {
+    await auth.logout();
   };
 
   const createLinks = (routes: any) => {

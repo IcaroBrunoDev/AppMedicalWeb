@@ -1,44 +1,27 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
 
 import {
-  Container,
   Button,
-  Card,
-  CardBody,
   FormGroup,
   Form,
   Input,
   InputGroupAddon,
   InputGroupText,
   InputGroup,
-  Row,
-  Col,
   Spinner,
 } from "reactstrap";
 
 import { Credentials } from "../../interfaces/Sign";
 
-import api from "../../utils/axios";
+import { useAuth } from "../../context/AuthProvider";
 
-import { storageProfile, storageSessionToken } from "../../utils/caches";
-import {
-  AlertType,
-  AwaitedApiProfile,
-  AwaitedApiToken,
-} from "../../interfaces/General";
-import { ExceptionMessages } from "../../utils/messages";
-import { decodeExceptionObject } from "../../utils/helpers";
-import axios from "../../utils/axios";
-
-enum Provider {
-  admin_nurse = "admin_nurse",
-  specialized_doctor = "doctor",
-}
 export default function SignForm() {
+  const auth = useAuth();
+
   const [loading, setLoading] = React.useState<boolean>(false);
+
   const [credentials, setCredentials] = React.useState<Credentials>({
-    authenticator: "",
+    email: "",
     password: "",
   });
 
@@ -47,42 +30,25 @@ export default function SignForm() {
     setCredentials((prev: any) => ({ ...prev, [name]: value }));
   };
 
-  async function authenticate(e: React.FormEvent<HTMLFormElement>) {
+  const authenticate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const { authenticator, password } = credentials;
+    const { email, password } = credentials;
 
-    if (authenticator === "" || password === "") {
+    if (email === "" || password === "") {
       return;
     }
 
     setLoading(true);
 
-    try {
-      const { data } = await api.post<AwaitedApiToken>("/signin", {
-        login: authenticator,
-        password,
-        provider: Provider.specialized_doctor,
-      });
+    const isSigned = await auth.authenticate({ email, password });
 
-      const { token } = data.response;
+    setLoading(false);
 
-      storageSessionToken(data.response);
-
-      const profile = await api.get<AwaitedApiProfile>("/doctors", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      storageProfile(profile.data.response);
-
-      window.location.href = "/#/admin/agenda";
-    } catch (err: any) {
-    } finally {
-      setLoading(false);
+    if (typeof isSigned === "boolean" && isSigned) {
+      document.location.assign("/#/admin/agenda");
     }
-  }
+  };
 
   return (
     <Form role="form" onSubmit={authenticate}>
@@ -94,10 +60,10 @@ export default function SignForm() {
             </InputGroupText>
           </InputGroupAddon>
           <Input
-            name="authenticator"
+            name="email"
             placeholder="Email *"
             type="email"
-            autoComplete="authenticator"
+            autoComplete="email"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               handleInput(e.target)
             }
@@ -125,7 +91,7 @@ export default function SignForm() {
       <div className="text-center">
         <Button className="my-4" color="secondary" type="submit">
           {loading ? (
-            <Spinner animation="border" role="status" size="sm"></Spinner>
+            <Spinner animation="border" role="status" size="sm" />
           ) : (
             "Entrar"
           )}

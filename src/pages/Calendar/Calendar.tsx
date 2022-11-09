@@ -17,15 +17,16 @@ import {
   getLastMonthDay,
 } from "../../utils/calendar";
 
-import { getStoragedProfile } from "../../utils/caches";
 import { usePropsContext } from "../..";
+import { Schedules } from "../../interfaces/Schedules";
+import { getStoragedProfile } from "../../utils/caches";
 
 export default function Calendar() {
   const doctor = getStoragedProfile();
 
   const { showAlert, selectedLocationId }: any = usePropsContext();
 
-  const [schedules, setSchedules] = React.useState<any>([]);
+  const [schedules, setSchedules] = React.useState<Schedules[]>([]);
 
   /** Dates States */
   const [currentDate, setCurrentDate] = React.useState<Date>(new Date());

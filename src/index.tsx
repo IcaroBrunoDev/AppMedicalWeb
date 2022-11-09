@@ -16,60 +16,51 @@ import "rc-time-picker/assets/index.css";
 import AuthLayout from "./layouts/Auth";
 import AdminLayout from "./layouts/Admin";
 
-import CustomAlert from "./components/AlertModal/AlertModal";
-
-import { AlertType } from "./interfaces/General";
-import { getSessionToken } from "./utils/caches";
-
-interface Exception {
-  open: boolean;
-  type: AlertType;
-  message: string | null;
-}
+import { AlertProvider } from "./context/AlertProvider";
+import { AuthProvider, useAuth } from "./context/AuthProvider";
 
 export const PropsContext = React.createContext({});
 
-const PrivateRoute = (props: RouteProps) => (
-  <Route
-    {...props}
-    render={(props: RouteProps) =>
-      getSessionToken()?.token ? (
-        <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
-      ) : (
-        <Redirect to={{ pathname: "/", state: { from: props.location } }} />
-      )
-    }
-  />
-);
-
-export function Routes() {
-  const [alert, showAlert] = React.useState<Exception>({
-    open: false,
-    type: AlertType.danger,
-    message: null,
-  });
-
-  const [selectedLocationId, setSelectedLocationId] = React.useState<any>(null);
-
-  const closeAlert = () => {
-    showAlert((prev) => ({ ...prev, open: false }));
-  };
+const PrivateRoute = (props: RouteProps) => {
+  const auth = useAuth();
 
   return (
-    <>
-      {alert.open && <CustomAlert {...alert} onClose={closeAlert} />}
+    <Route
+      {...props}
+      render={(props: RouteProps) =>
+        auth.isAuthenticated ? (
+          <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
+        ) : (
+          <Redirect to={{ pathname: "/", state: { from: props.location } }} />
+        )
+      }
+    />
+  );
+};
 
-      <PropsContext.Provider
-        value={{ alert, showAlert, selectedLocationId, setSelectedLocationId }}
-      >
-        <HashRouter>
-          <Switch>
-            <PrivateRoute path="/admin" />
-            <Route path="/" render={() => <AuthLayout />} />
-          </Switch>
-        </HashRouter>
-      </PropsContext.Provider>
-    </>
+export function Routes() {
+  const [selectedLocationId, setSelectedLocationId] = React.useState<
+    number | undefined
+  >();
+
+  return (
+    <AlertProvider>
+      <AuthProvider>
+        <PropsContext.Provider
+          value={{
+            selectedLocationId,
+            setSelectedLocationId,
+          }}
+        >
+          <HashRouter>
+            <Switch>
+              <PrivateRoute path="/admin" />
+              <Route path="/" render={() => <AuthLayout />} />
+            </Switch>
+          </HashRouter>
+        </PropsContext.Provider>
+      </AuthProvider>
+    </AlertProvider>
   );
 }
 

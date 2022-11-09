@@ -83,7 +83,7 @@ export default function CreateDoctor({
 
   const [loading, setLoading] = React.useState<boolean>(false);
 
-  const [profile, setProfile] = React.useState<Doctor>(create_doctor);
+  const [profile, setProfile] = React.useState<Doctor>({} as Doctor);
 
   React.useEffect(() => {
     const loadingSpecialties = async () => {

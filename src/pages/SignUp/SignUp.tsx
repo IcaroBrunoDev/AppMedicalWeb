@@ -28,11 +28,7 @@ import { signup_credentials } from "../../utils/constants";
 import { ExceptionMessages } from "../../utils/messages";
 
 import { usePropsContext } from "../../index";
-import {
-  AlertType,
-  AwaitedApiProfile,
-  AwaitedApiToken,
-} from "../../interfaces/General";
+import { AlertType } from "../../interfaces/General";
 import { AttendanceLocal, SignUpProfile } from "../../interfaces/Sign";
 
 import { storageProfile, storageSessionToken } from "../../utils/caches";
@@ -131,7 +127,7 @@ export default function SignUp() {
 
       setLoading(true);
 
-      const { data } = await api.post<AwaitedApiToken>("/adminurse", {
+      const { data } = await api.post("/adminurse", {
         ...credentials,
         main_attendance_location: selectedLocation?.id,
       });
@@ -140,7 +136,7 @@ export default function SignUp() {
 
       storageSessionToken(data.response);
 
-      const profile = await api.get<AwaitedApiProfile>("/adminurse", {
+      const profile = await api.get("/adminurse", {
         headers: {
           Authorization: `Bearer ${token}`,
         },

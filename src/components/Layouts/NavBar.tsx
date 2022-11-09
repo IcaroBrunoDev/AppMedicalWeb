@@ -17,7 +17,7 @@ import {
 import Notifications from "./Notifications";
 
 import api from "../../utils/axios";
-import { usePropsContext } from "../..";
+
 import { getStoragedProfile } from "../../utils/caches";
 
 interface AdminNavbarProps {
@@ -26,8 +26,6 @@ interface AdminNavbarProps {
 
 export default function AdminNavbar({ brandText }: AdminNavbarProps) {
   const { profile_picture } = getStoragedProfile();
-
-  const { showAlert, setSelectedLocationId }: any = usePropsContext();
 
   const [notifications, setNotifications] = React.useState<boolean>(false);
   const [selectedLocation, setSelectedLocation] = React.useState<any>(null);
@@ -41,12 +39,9 @@ export default function AdminNavbar({ brandText }: AdminNavbarProps) {
         if (data.response.length > 0) {
           setSelectedLocation(data.response[0]);
           setAttedanceLocations(data.response);
-          setSelectedLocationId(data.response[0]?.location.id);
         } else {
         }
-      } catch (err) {
-        showAlert({ open: true, type: "danger", message: err });
-      }
+      } catch (err) {}
     };
 
     getAttendanceLocations();
@@ -55,7 +50,6 @@ export default function AdminNavbar({ brandText }: AdminNavbarProps) {
   const handleAttendanceLocation = (event: any, place: any) => {
     event.preventDefault();
     setSelectedLocation(place);
-    setSelectedLocationId(place.location.id);
   };
 
   return (

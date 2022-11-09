@@ -4,7 +4,7 @@ import { usePropsContext } from "../index";
 import { AlertType } from "../interfaces/General";
 
 export const SucessAlert = (message: string) => {
-  const { showAlert }: any = usePropsContext();
+  const { showAlert } = useAlert();
 
   showAlert({
     open: true,

@@ -27,7 +27,8 @@ import CreateAdminNurse from "../../components/Contributors/Create/AdminNurse";
 import api from "../../utils/axios";
 
 import { ReadDoctors } from "../../interfaces/Profiles";
-import { usePropsContext } from "../..";
+import { useAlert } from "../../context/AlertProvider";
+import { usePlaces } from "../../context/PlacesProvider";
 
 enum ContributorsType {
   admin_nurses = "admin_nurses",
@@ -40,7 +41,8 @@ interface ContributorState {
 }
 
 export default function Contributor() {
-  const { showAlert, selectedLocationId }: any = usePropsContext();
+  const { showAlert } = useAlert();
+  const { selectedLocation } = usePlaces();
 
   const [refresh, setRefresh] = React.useState<number>(0);
 
@@ -64,7 +66,7 @@ export default function Contributor() {
         setContributors([]);
 
         const { data } = await api.get(
-          `locations/${selectedLocationId}/contributors?filter=all&page=${currentPage}`
+          `locations/${selectedLocation.id}/contributors?filter=all&page=${currentPage}`
         );
 
         switch (contributorsType) {
@@ -123,10 +125,7 @@ export default function Contributor() {
                       {contributorsType === ContributorsType.specialized_doctors
                         ? "Médicos"
                         : "Administradores da Unidade"}{" "}
-                      Vinculados na{" "}
-                      <span className="text-medical">
-                      
-                      </span>
+                      Vinculados na <span className="text-medical"></span>
                     </small>
                   </Col>
                   <Col

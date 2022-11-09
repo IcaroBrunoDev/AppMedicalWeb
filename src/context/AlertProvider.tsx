@@ -5,8 +5,8 @@ import CustomAlert from "../components/AlertModal/AlertModal";
 
 interface AlertInterface {
   open: boolean;
-  type: AlertType;
-  message: string;
+  type: AlertType | any;
+  message: string | any;
 }
 
 interface AlertContextInterface {

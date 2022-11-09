@@ -19,9 +19,7 @@ import { daysOfWeek } from "../../utils/constants";
 import { getStoragedProfile } from "../../utils/caches";
 
 import { ReadDoctors } from "../../interfaces/Profiles";
-import { AlertType } from "../../interfaces/General";
-
-import { usePropsContext } from "../../index";
+import { useAlert } from "../../context/AlertProvider";
 
 interface CreateDoctorProps {
   open: boolean;
@@ -46,7 +44,7 @@ export default function CreateAvailability({
   onClose,
   onStore,
 }: CreateDoctorProps) {
-  const { showAlert }: any = usePropsContext();
+  const { showAlert } = useAlert();
 
   const { main_location } = getStoragedProfile();
 

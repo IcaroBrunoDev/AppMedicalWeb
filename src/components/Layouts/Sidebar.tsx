@@ -29,9 +29,7 @@ import { NavbarBrandType, SidebarProps } from "../../interfaces/Sidebar";
 export default function Sidebar({ logo, routes }: SidebarProps) {
   const auth = useAuth();
 
-  console.log(auth.profile);
-
-  const profile_picture = "";
+  const profile_picture = auth.profile?.profile_picture;
 
   const [collapseOpen, setCollapseOpen] = React.useState<boolean>();
   const [navbarBrandProps, setNavbarBrandProps] =

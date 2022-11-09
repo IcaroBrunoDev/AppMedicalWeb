@@ -1,11 +1,11 @@
 import React from "react";
 import { Doctor } from "../interfaces/Doctors";
-import { AlertType } from "../interfaces/General";
+import { AlertType, Providers } from "../interfaces/General";
 
 import api, { inteceptor } from "../utils/axios";
 
 import {
-  clearAllCaches,
+  clearCache,
   getSessionToken,
   getStoragedProfile,
   storageProfile,
@@ -30,7 +30,7 @@ const AuthContext = React.createContext<AuthProviderInterface>(
 );
 
 export function AuthProvider({ children }: any) {
-  const alert = useAlert();
+  const { showAlert } = useAlert();
 
   const [profile, setProfile] = React.useState<Doctor | undefined>();
   const [isAuthenticated, setIsAuthenticated] = React.useState<boolean>(false);
@@ -45,6 +45,8 @@ export function AuthProvider({ children }: any) {
 
     if (storagedToken && storageProfile) {
       inteceptor();
+      setProfile(storageProfile);
+
       setIsAuthenticated(true);
 
       document.location.assign("/#/admin/agenda");
@@ -77,9 +79,7 @@ export function AuthProvider({ children }: any) {
 
       throw new Error("Error, it was not possible to obtain the perfil");
     } catch (err) {
-      console.log(err);
-
-      alert.showAlert({ open: true, type: AlertType.danger, message: "tete" });
+      showAlert({ open: true, type: AlertType.danger, message: "tete" });
     }
   };
 
@@ -99,25 +99,22 @@ export function AuthProvider({ children }: any) {
 
   const logout = async () => {
     try {
-      await api.delete("/signout");
+      await api.post("/signout", {
+        provider: Providers.doctor,
+      });
 
-      clearAllCaches();
+      clearCache();
 
       document.location.replace("/");
     } catch (err: any) {
-
-      console.log(err)
-
       const { status } = err.response;
 
       if (status === 500) {
-        clearAllCaches();
-
+        clearCache();
         document.location.replace("/");
       }
     }
   };
-
 
   return (
     <AuthContext.Provider

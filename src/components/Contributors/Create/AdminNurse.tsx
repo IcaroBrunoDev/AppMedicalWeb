@@ -25,15 +25,16 @@ import { Field } from "../../../interfaces/Inputs";
 import { CreateDoctorProps } from "../../../interfaces/Doctors";
 import { ProfessionalCreate } from "../../../interfaces/Profiles";
 
-import { usePropsContext } from "../../..";
+
 import { ExceptionMessages } from "../../../utils/messages";
+import { useAlert } from "../../../context/AlertProvider";
 
 export default function CreateAdminNurse({
   open,
   onClose,
   onRefresh,
 }: CreateDoctorProps) {
-  const { showAlert }: any = usePropsContext();
+  const { showAlert } = useAlert();
 
   const { main_location } = getStoragedProfile();
 

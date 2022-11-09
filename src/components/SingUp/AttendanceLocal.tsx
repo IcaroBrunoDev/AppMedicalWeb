@@ -17,7 +17,7 @@ import {
 import cep from "cep-promise";
 
 import api from "../../utils/axios";
-import { usePropsContext } from "../..";
+
 import { phoneFormatter } from "../../utils/formatters";
 import { verifyInputsIsFilled } from "../../utils/helpers";
 
@@ -54,7 +54,7 @@ export default function CreateAttendanceLocal({
   onClose,
   onSelectLocal,
 }: CreateAttendanceLocalProps) {
-  const { showAlert }: any = usePropsContext();
+  const { showAlert } = useAlert();
 
   const [loading, setLoading] = React.useState(false);
 

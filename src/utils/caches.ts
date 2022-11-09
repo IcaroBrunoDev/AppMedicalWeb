@@ -19,7 +19,6 @@ export const getStoragedProfile = () => {
   return profile ? JSON.parse(profile) : null;
 };
 
-export const clearAllCaches = () => {
-  sessionStorage.clear();
-  return;
+export const clearCache = () => {
+  return sessionStorage.clear();
 };

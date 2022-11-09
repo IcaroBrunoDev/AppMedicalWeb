@@ -18,17 +18,18 @@ import {
   Media,
   Table,
 } from "reactstrap";
-import { usePropsContext } from "../..";
 
 import Header from "../../components/Layouts/Header";
+import { useAlert } from "../../context/AlertProvider";
+import { useAuth } from "../../context/AuthProvider";
+import { usePlaces } from "../../context/PlacesProvider";
 
 import api from "../../utils/axios";
-import { getStoragedProfile } from "../../utils/caches";
 
 export default function Appointments() {
-  const doctor = getStoragedProfile();
-
-  const { showAlert, selectedLocationId }: any = usePropsContext();
+  const { profile } = useAuth();
+  const { showAlert } = useAlert();
+  const { selectedLocation } = usePlaces();
 
   const [loading, setLoading] = React.useState<boolean>(false);
   const [appointments, setAppointments] = React.useState<any[]>([]);
@@ -38,7 +39,7 @@ export default function Appointments() {
       try {
         setLoading(true);
         const { data } = await api.get(
-          `/doctors/${doctor.id}/${selectedLocationId}/schedules?initial_date=1999-01-01&final_date=3250-01-01`
+          `/doctors/${profile?.id}/${selectedLocation.id}/schedules?initial_date=1999-01-01&final_date=3250-01-01`
         );
 
         setAppointments(data.response);
@@ -90,9 +91,10 @@ export default function Appointments() {
                         <tr>
                           <th scope="row">
                             <Media className="align-items-center">
-                         
                               <Media>
-                                <span className="mb-0 text-sm">{appointment.event_name}</span>
+                                <span className="mb-0 text-sm">
+                                  {appointment.event_name}
+                                </span>
                               </Media>
                             </Media>
                           </th>

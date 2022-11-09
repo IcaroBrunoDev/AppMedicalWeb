@@ -12,11 +12,11 @@ import AdminNavbar from "../components/Layouts/NavBar";
 
 import routes from "../routes";
 
-import { usePropsContext } from "..";
 import { RoutesInterface } from "../interfaces/Routes";
+import { usePlaces } from "../context/PlacesProvider";
 
 export default function Admin(props: RouteProps) {
-  const { selectedLocationId }: any = usePropsContext();
+  const { selectedLocation } = usePlaces();
 
   const location = useLocation();
   const mainContent = React.useRef<HTMLDivElement>(null);
@@ -66,7 +66,7 @@ export default function Admin(props: RouteProps) {
       <div className="main-content" ref={mainContent}>
         <AdminNavbar {...props} brandText={getBrandText(location.pathname)} />
         <Switch>
-          {selectedLocationId && getRoutes(routes)}
+          {selectedLocation && getRoutes(routes)}
           <Redirect from="*" to="/admin/agenda" />
         </Switch>
       </div>

@@ -18,14 +18,15 @@ import {
   Media,
   Table,
 } from "reactstrap";
-import { usePropsContext } from "../..";
+
 
 import Header from "../../components/Layouts/Header";
+import { useAlert } from "../../context/AlertProvider";
 
 import api from "../../utils/axios";
 
 export default function LocationPatients() {
-  const { showAlert }: any = usePropsContext();
+  const { showAlert } = useAlert();
 
   const [loading, setLoading] = React.useState<boolean>(false);
   const [pagination, setPagination] = React.useState<any>();

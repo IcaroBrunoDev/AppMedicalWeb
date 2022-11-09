@@ -27,14 +27,14 @@ import { AlertType } from "../../../interfaces/General";
 import { AxiosSpecialtyResponse } from "../../../interfaces/Axios";
 import { Doctor, CreateDoctorProps } from "../../../interfaces/Doctors";
 
-import { usePropsContext } from "../../..";
+import { useAlert } from "../../../context/AlertProvider";
 
 export default function CreateDoctor({
   open,
   onClose,
   onRefresh,
 }: CreateDoctorProps) {
-  const { showAlert }: any = usePropsContext();
+  const { showAlert } = useAlert();
 
   const { main_location } = getStoragedProfile();
 

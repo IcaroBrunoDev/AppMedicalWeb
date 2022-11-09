@@ -13,9 +13,10 @@ import {
   InputGroupText,
   Spinner,
 } from "reactstrap";
+import { useAlert } from "../../../context/AlertProvider";
+import { usePlaces } from "../../../context/PlacesProvider";
 import axios from "../../../utils/axios";
 
-import { usePropsContext } from "../../../index";
 import { formateDateToString, formatHour } from "../../../utils/calendar";
 
 const defaultSchedule = {
@@ -37,8 +38,10 @@ const defaultErrors = {
 };
 
 export default function CalendarScheduling(props) {
+  const { showAlert } = useAlert();
+  const { selectedLocation } = usePlaces();
+
   const { open, selectedDoctor, onClose, onRefreshCalendar } = props;
-  const { showAlert, selectedLocationId } = usePropsContext();
 
   const [loading, setLoading] = React.useState(false);
   const [searchLoading, setSearchLoading] = React.useState(false);
@@ -107,7 +110,7 @@ export default function CalendarScheduling(props) {
         notes,
         doctor_id: selectedDoctor.doctor.id,
         patient_id: patient.id,
-        attendance_location_id: selectedLocationId,
+        attendance_location_id: selectedLocation.id,
       });
 
       showAlert({

@@ -5,7 +5,7 @@ import api from "../../../utils/axios";
 
 import { decodeExceptionObject } from "../../../utils/helpers";
 
-import { usePropsContext } from "../../..";
+
 import { ExceptionMessages } from "../../../utils/messages";
 
 interface DestoyAdminNurseProps {
@@ -21,7 +21,7 @@ export default function DestoyAdminNurse({
   onClose,
   onRefresh,
 }: DestoyAdminNurseProps) {
-  const { showAlert }: any = usePropsContext();
+  const { showAlert } = useAlert();
 
   const [loading, setLoading] = React.useState<boolean>(false);
 

@@ -19,18 +19,18 @@ import {
   Table,
   Badge,
 } from "reactstrap";
-import { usePropsContext } from "../..";
 
 import Header from "../../components/Layouts/Header";
 import AcceptLink from "../../components/LocationPendingLinks/AcceptLink";
 import RejectLink from "../../components/LocationPendingLinks/RejectLink";
+import { useAlert } from "../../context/AlertProvider";
+import { usePlaces } from "../../context/PlacesProvider";
 
 import api from "../../utils/axios";
 
-import { formatDate } from "../../utils/formatters";
-
 export default function LocationPendingLinks() {
-  const { showAlert, selectedLocationId }: any = usePropsContext();
+  const { showAlert } = useAlert();
+  const { selectedLocation } = usePlaces();
 
   const [refresh, setRefresh] = React.useState<number>(0);
 
@@ -49,7 +49,7 @@ export default function LocationPendingLinks() {
         setLoading(true);
 
         const { data } = await api.get(
-          `/links/${selectedLocationId}/pendings?page=${currentPage}`
+          `/links/${selectedLocation.id}/pendings?page=${currentPage}`
         );
 
         setPagination(data.response.meta);
@@ -62,7 +62,7 @@ export default function LocationPendingLinks() {
     };
 
     loadingAttendanceLinks();
-  }, [refresh, currentPage]);
+  }, [refresh, currentPage, selectedLocation, showAlert]);
 
   const onRefresh = () => {
     setRefresh((prev) => prev + 1);

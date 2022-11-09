@@ -27,11 +27,12 @@ import {
 import { signup_credentials } from "../../utils/constants";
 import { ExceptionMessages } from "../../utils/messages";
 
-import { usePropsContext } from "../../index";
+
 import { AlertType } from "../../interfaces/General";
 import { AttendanceLocal, SignUpProfile } from "../../interfaces/Sign";
 
 import { storageProfile, storageSessionToken } from "../../utils/caches";
+import { useAlert } from "../../context/AlertProvider";
 
 interface Awaited {
   response: AttendanceLocal[];
@@ -40,7 +41,7 @@ interface Awaited {
 export default function SignUp() {
   const searchResult = React.useRef<HTMLDivElement>(null);
 
-  const { showAlert }: any = usePropsContext();
+  const { showAlert } = useAlert();
 
   const [loading, setLoading] = React.useState<boolean>(false);
   const [searchLoading, setSearchLoading] = React.useState<boolean>(false);

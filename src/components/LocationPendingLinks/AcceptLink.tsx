@@ -1,7 +1,8 @@
 import * as React from "react";
 import { Button, Modal, Spinner } from "reactstrap";
 
-import { usePropsContext } from "../..";
+
+import { useAlert } from "../../context/AlertProvider";
 import { AlertType } from "../../interfaces/General";
 
 import api from "../../utils/axios";
@@ -19,7 +20,7 @@ export default function AcceptLink({
   onClose,
   onRefresh,
 }: ModalProps) {
-  const { showAlert }: any = usePropsContext();
+  const { showAlert } = useAlert();
 
   const [loading, setLoading] = React.useState<boolean>(false);
 

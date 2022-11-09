@@ -16,11 +16,10 @@ import {
   Badge,
 } from "reactstrap";
 
-import api from "../../utils/axios";
-import { usePropsContext } from "../..";
+import { useAlert } from "../../context/AlertProvider";
 
 export default function MyLocations() {
-  const { showAlert }: any = usePropsContext();
+  const { showAlert } = useAlert();
 
   const [loading, setLoading] = React.useState<boolean>(false);
   const [attendanceLinks, setAttendanceLinks] = React.useState<any[]>([]);
@@ -29,9 +28,7 @@ export default function MyLocations() {
     // const loadingAttendanceLinks = async () => {
     //   try {
     //     setLoading(true);
-
     //     const { data } = await api.get(`/links`);
-
     //     setAttendanceLinks(data.response);
     //   } catch (err) {
     //     showAlert({ open: true, type: "danger", message: err });
@@ -39,7 +36,6 @@ export default function MyLocations() {
     //     setLoading(false);
     //   }
     // };
-
     // loadingAttendanceLinks();
   }, []);
 

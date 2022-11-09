@@ -17,18 +17,17 @@ import AuthLayout from "./layouts/Auth";
 import AdminLayout from "./layouts/Admin";
 
 import { AlertProvider } from "./context/AlertProvider";
+import { PlacesProvider } from "./context/PlacesProvider";
 import { AuthProvider, useAuth } from "./context/AuthProvider";
 
-export const PropsContext = React.createContext({});
-
 const PrivateRoute = (props: RouteProps) => {
-  const auth = useAuth();
+  const { isAuthenticated } = useAuth();
 
   return (
     <Route
       {...props}
       render={(props: RouteProps) =>
-        auth.isAuthenticated ? (
+        isAuthenticated ? (
           <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
         ) : (
           <Redirect to={{ pathname: "/", state: { from: props.location } }} />
@@ -39,31 +38,20 @@ const PrivateRoute = (props: RouteProps) => {
 };
 
 export function Routes() {
-  const [selectedLocationId, setSelectedLocationId] = React.useState<
-    number | undefined
-  >();
-
   return (
     <AlertProvider>
       <AuthProvider>
-        <PropsContext.Provider
-          value={{
-            selectedLocationId,
-            setSelectedLocationId,
-          }}
-        >
+        <PlacesProvider>
           <HashRouter>
             <Switch>
               <PrivateRoute path="/admin" />
               <Route path="/" render={() => <AuthLayout />} />
             </Switch>
           </HashRouter>
-        </PropsContext.Provider>
+        </PlacesProvider>
       </AuthProvider>
     </AlertProvider>
   );
 }
-
-export const usePropsContext = () => React.useContext(PropsContext);
 
 ReactDOM.render(<Routes />, document.getElementById("root"));

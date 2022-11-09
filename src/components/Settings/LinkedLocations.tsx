@@ -15,12 +15,14 @@ import {
   Table,
   Badge,
 } from "reactstrap";
-import { usePropsContext } from "../..";
+import { useAlert } from "../../context/AlertProvider";
+import { usePlaces } from "../../context/PlacesProvider";
 
 import api from "../../utils/axios";
 
 export default function LinkedLocations() {
-  const { showAlert, selectedLocationId }: any = usePropsContext();
+  const { showAlert } = useAlert();
+  const { selectedLocation } = usePlaces();
 
   const [loading, setLoading] = React.useState<boolean>(false);
   const [attendanceLinks, setAttendanceLinks] = React.useState<any>([]);
@@ -31,7 +33,7 @@ export default function LinkedLocations() {
         setLoading(true);
 
         const { data } = await api.get(
-          `/links/${selectedLocationId}/specialized`
+          `/links/${selectedLocation.id}/specialized`
         );
 
         if (data.response) {

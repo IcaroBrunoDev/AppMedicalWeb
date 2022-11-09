@@ -17,14 +17,16 @@ import {
   getLastMonthDay,
 } from "../../utils/calendar";
 
-import { usePropsContext } from "../..";
 import { Schedules } from "../../interfaces/Schedules";
-import { getStoragedProfile } from "../../utils/caches";
+
+import { useAuth } from "../../context/AuthProvider";
+import { useAlert } from "../../context/AlertProvider";
+import { usePlaces } from "../../context/PlacesProvider";
 
 export default function Calendar() {
-  const doctor = getStoragedProfile();
-
-  const { showAlert, selectedLocationId }: any = usePropsContext();
+  const { profile } = useAuth();
+  const { showAlert } = useAlert();
+  const { selectedLocation } = usePlaces();
 
   const [schedules, setSchedules] = React.useState<Schedules[]>([]);
 
@@ -48,15 +50,15 @@ export default function Calendar() {
         const final_date = getLastMonthDay(currentDate);
 
         const { data } = await api.get(
-          `/doctors/${doctor.id}/${selectedLocationId}/schedules?initial_date=${initial_date}&final_date=${final_date}`
+          `/doctors/${profile?.id}/${selectedLocation?.id}/schedules?initial_date=${initial_date}&final_date=${final_date}`
         );
 
         if (data.response.length > 0) setSchedules(data.response);
       } catch (err) {
-        showAlert({ open: true, type: "danger", message: err });
+        showAlert({ open: true, message: "", type: "danger" });
       }
     })();
-  }, [currentDate, updateComponent]);
+  }, [profile, selectedLocation, currentDate, updateComponent, showAlert]);
 
   const handlePrevMonth = () => {
     const prevMonth = getPrevMonth(currentDate);

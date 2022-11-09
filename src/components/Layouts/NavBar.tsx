@@ -11,41 +11,18 @@ import {
   Nav,
   Container,
   Media,
-  Badge,
 } from "reactstrap";
 
-import Notifications from "./Notifications";
-
-import api from "../../utils/axios";
-
-import { getStoragedProfile } from "../../utils/caches";
+import { useAuth } from "../../context/AuthProvider";
+import { usePlaces } from "../../context/PlacesProvider";
 
 interface AdminNavbarProps {
   brandText: string;
 }
 
 export default function AdminNavbar({ brandText }: AdminNavbarProps) {
-  const { profile_picture } = getStoragedProfile();
-
-  const [notifications, setNotifications] = React.useState<boolean>(false);
-  const [selectedLocation, setSelectedLocation] = React.useState<any>(null);
-  const [attendanceLocations, setAttedanceLocations] = React.useState<any>([]);
-
-  React.useEffect(() => {
-    const getAttendanceLocations = async () => {
-      try {
-        const { data } = await api.get("/places");
-
-        if (data.response.length > 0) {
-          setSelectedLocation(data.response[0]);
-          setAttedanceLocations(data.response);
-        } else {
-        }
-      } catch (err) {}
-    };
-
-    getAttendanceLocations();
-  }, []);
+  const { profile } = useAuth();
+  const { locations, selectedLocation, setSelectedLocation } = usePlaces();
 
   const handleAttendanceLocation = (event: any, place: any) => {
     event.preventDefault();
@@ -56,36 +33,31 @@ export default function AdminNavbar({ brandText }: AdminNavbarProps) {
     <>
       <Navbar className="navbar-top navbar-dark" expand="md" id="navbar-main">
         <Container fluid>
-          <Link
-            to="/"
-            className="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block"
-          >
+          <span className="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block">
             {brandText}
-          </Link>
+          </span>
           <Nav className="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto">
             <UncontrolledDropdown nav>
               <DropdownToggle className="pr-0" nav>
                 <Media className="align-items-center">
                   <Media className="ml-2 d-none d-lg-block">
                     <span className="mb-0 text-sm text-white font-weight-bold">
-                      Local de Atendimento:{" "}
-                      {selectedLocation?.location.local_name}
+                      Local de Atendimento: {selectedLocation.local_name}
                     </span>
                   </Media>
                 </Media>
               </DropdownToggle>
               <DropdownMenu className="dropdown-menu-arrow" right>
-                {attendanceLocations.length > 0 &&
-                  attendanceLocations.map((place: any, key: any) => (
+                {locations.length > 0 &&
+                  locations.map((local: any, key: any) => (
                     <DropdownItem
                       key={key}
-                      href="/"
                       onClick={(event) =>
-                        handleAttendanceLocation(event, place)
+                        handleAttendanceLocation(event, local.location)
                       }
                     >
                       <i className="fa fa-hospital-user text-medical" />
-                      <span>{place.location.local_name}</span>
+                      <span>{local.location.local_name}</span>
                     </DropdownItem>
                   ))}
               </DropdownMenu>
@@ -96,7 +68,7 @@ export default function AdminNavbar({ brandText }: AdminNavbarProps) {
               <DropdownToggle className="pr-0" nav>
                 <Media className="align-items-center">
                   <span className="avatar avatar-sm rounded-circle">
-                    <img alt="profile_picture" src={profile_picture} />
+                    <img alt="profile_picture" src={profile?.profile_picture} />
                   </span>
                   <Media className="ml-2 d-none d-lg-block">
                     <span className="mb-0 text-sm font-weight-bold"></span>
@@ -104,26 +76,22 @@ export default function AdminNavbar({ brandText }: AdminNavbarProps) {
                 </Media>
               </DropdownToggle>
               <DropdownMenu className="dropdown-menu-arrow" right>
-                <DropdownItem href="#" onClick={(e) => e.preventDefault()}>
-                  <i className="ni ni-user-run" />
-                  <span>Logout</span>
+                <DropdownItem to="/admin/configuracoes" tag={Link}>
+                  <i className="fa-solid fa-gear text-medical" />
+                  <span>Configurações</span>
                 </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
           </Nav>
-          <Nav
+          {/* <Nav
             onClick={() => setNotifications(true)}
             className="align-items-center d-none d-md-flex ml-3 cursor-pointer"
           >
-            <i className="ni ni-bell-55 text-white"></i>
+            <i className="ni ni-bell-55 text-white mr-1"></i>
             <Badge className="badge-white">0</Badge>
-          </Nav>
+          </Nav> */}
         </Container>
       </Navbar>
-
-      {notifications && (
-        <Notifications onClose={() => setNotifications(false)} />
-      )}
     </>
   );
 }

@@ -32,7 +32,7 @@ const AuthContext = React.createContext<AuthProviderInterface>(
 export function AuthProvider({ children }: any) {
   const { showAlert } = useAlert();
 
-  const [profile, setProfile] = React.useState<Doctor | undefined>();
+  const [profile, setProfile] = React.useState<Doctor>({} as Doctor);
   const [isAuthenticated, setIsAuthenticated] = React.useState<boolean>(false);
 
   enum Provider {

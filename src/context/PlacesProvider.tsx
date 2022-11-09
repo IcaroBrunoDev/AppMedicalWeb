@@ -7,6 +7,7 @@ import { useAlert } from "./AlertProvider";
 import { useAuth } from "./AuthProvider";
 
 interface PlacesContextInterface {
+  locations: any[];
   selectedLocation: any;
   setSelectedLocation: (place: any) => void;
   handleAttendanceLocation: (place: any) => void;
@@ -20,9 +21,8 @@ export function PlacesProvider({ children }: any) {
   const { showAlert } = useAlert();
   const { isAuthenticated } = useAuth();
 
-  const [selectedLocation, setSelectedLocation] = React.useState<
-    number | undefined
-  >();
+  const [locations, setLocations] = React.useState<any[]>([]);
+  const [selectedLocation, setSelectedLocation] = React.useState<any>();
 
   React.useEffect(() => {
     if (isAuthenticated) {
@@ -31,6 +31,7 @@ export function PlacesProvider({ children }: any) {
           const { data } = await api.get("/places");
 
           if (data.response.length > 0) {
+            setLocations(data.response);
             setSelectedLocation(data.response[0]?.location);
           }
         } catch (err) {
@@ -47,6 +48,7 @@ export function PlacesProvider({ children }: any) {
   return (
     <PlacesContext.Provider
       value={{
+        locations,
         selectedLocation,
         setSelectedLocation,
         handleAttendanceLocation,

@@ -6,14 +6,16 @@ import {
   Redirect,
   RouteProps,
 } from "react-router-dom";
+import { Container } from "reactstrap";
 
+import Header from "../components/Layouts/Header";
 import Sidebar from "../components/Layouts/Sidebar";
 import AdminNavbar from "../components/Layouts/NavBar";
 
 import routes from "../routes";
 
-import { RoutesInterface } from "../interfaces/Routes";
 import { usePlaces } from "../context/PlacesProvider";
+import { RoutesInterface } from "../interfaces/Routes";
 
 export default function Admin(props: RouteProps) {
   const { selectedLocation } = usePlaces();
@@ -63,13 +65,19 @@ export default function Admin(props: RouteProps) {
           imgAlt: "brand",
         }}
       />
-      <div className="main-content" ref={mainContent}>
-        <AdminNavbar {...props} brandText={getBrandText(location.pathname)} />
-        <Switch>
-          {selectedLocation && getRoutes(routes)}
-          <Redirect from="*" to="/admin/agenda" />
-        </Switch>
-      </div>
+
+      {selectedLocation && (
+        <div className="main-content" ref={mainContent}>
+          <AdminNavbar {...props} brandText={getBrandText(location.pathname)} />
+          <Header />
+          <Container className="mt--9" fluid>
+            <Switch>
+              {getRoutes(routes)}
+              <Redirect from="*" to="/admin/agenda" />
+            </Switch>
+          </Container>
+        </div>
+      )}
     </>
   );
 }

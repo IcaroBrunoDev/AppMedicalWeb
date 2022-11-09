@@ -2,7 +2,6 @@ import * as React from "react";
 
 import { Card, CardHeader, CardBody, Container, Row } from "reactstrap";
 
-import Header from "../../components/Layouts/Header";
 import CalendarHeader from "../../components/Calendar/CalendarHeader";
 import CalendarComponent from "../../components/Calendar/ViewMonth/Calendar";
 import CalendarScheduling from "../../components/Calendar/Schedules/CreateSchedule";
@@ -83,33 +82,30 @@ export default function Calendar() {
 
   return (
     <>
-      <Header />
-      <Container className="mt--9" fluid>
-        <Row>
-          <div className="col">
-            <Card id="calendar-card" className="shadow">
-              <CardHeader className="border-0">
-                <CalendarHeader
-                  currentDate={currentDate}
-                  setCurrentDate={setCurrentDate}
-                  handlePrevMonth={handlePrevMonth}
-                  handleNextMonth={handleNextMonth}
-                  schedulesLength={schedules.length}
-                  setCreateNewSchedule={() => setCreateSchedule(true)}
-                />
-              </CardHeader>
-              <CardBody>
-                <CalendarComponent
-                  schedules={schedules}
-                  currentDate={currentDate}
-                  initialDayIndex={initialDayIndex}
-                  totalDaysInMonth={totalDaysInMonth}
-                />
-              </CardBody>
-            </Card>
-          </div>
-        </Row>
-      </Container>
+      <Row>
+        <div className="col">
+          <Card id="calendar-card" className="shadow">
+            <CardHeader className="border-0">
+              <CalendarHeader
+                currentDate={currentDate}
+                setCurrentDate={setCurrentDate}
+                handlePrevMonth={handlePrevMonth}
+                handleNextMonth={handleNextMonth}
+                schedulesLength={schedules.length}
+                setCreateNewSchedule={() => setCreateSchedule(true)}
+              />
+            </CardHeader>
+            <CardBody>
+              <CalendarComponent
+                schedules={schedules}
+                currentDate={currentDate}
+                initialDayIndex={initialDayIndex}
+                totalDaysInMonth={totalDaysInMonth}
+              />
+            </CardBody>
+          </Card>
+        </div>
+      </Row>
 
       {createSchedule && (
         <CalendarScheduling

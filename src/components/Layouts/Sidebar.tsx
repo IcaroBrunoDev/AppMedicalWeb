@@ -7,11 +7,6 @@ import {
   DropdownItem,
   UncontrolledDropdown,
   DropdownToggle,
-  Form,
-  Input,
-  InputGroupAddon,
-  InputGroupText,
-  InputGroup,
   Media,
   NavbarBrand,
   Navbar,
@@ -22,36 +17,14 @@ import {
   Row,
   Col,
 } from "reactstrap";
+
 import { useAuth } from "../../context/AuthProvider";
+import { SidebarProps } from "../../interfaces/Sidebar";
 
-import { NavbarBrandType, SidebarProps } from "../../interfaces/Sidebar";
+export default function Sidebar({ routes }: SidebarProps) {
+  const { profile, logout } = useAuth();
 
-export default function Sidebar({ logo, routes }: SidebarProps) {
-  const auth = useAuth();
-
-  const profile_picture = auth.profile?.profile_picture;
-
-  const [collapseOpen, setCollapseOpen] = React.useState<boolean>();
-  const [navbarBrandProps, setNavbarBrandProps] =
-    React.useState<NavbarBrandType>();
-
-  React.useEffect(() => {
-    let navbarProps: NavbarBrandType = {};
-
-    if (logo && logo.innerLink) {
-      navbarProps = {
-        to: logo.innerLink,
-        tag: Link,
-      };
-    } else if (logo && logo.outterLink) {
-      navbarProps = {
-        href: logo.outterLink,
-        target: "_blank",
-      };
-    }
-
-    setNavbarBrandProps(navbarProps);
-  }, [logo]);
+  const [collapseOpen, setCollapseOpen] = React.useState<boolean>(false);
 
   const toggleCollapse = () => {
     setCollapseOpen(!collapseOpen);
@@ -62,22 +35,23 @@ export default function Sidebar({ logo, routes }: SidebarProps) {
   };
 
   const signOut = async () => {
-    await auth.logout();
+    await logout();
   };
 
   const createLinks = (routes: any) => {
     return routes.map((prop: any, key: any) => {
+      const { show, layout, path, logout, icon, name } = prop;
       return (
-        prop.show && (
+        show && (
           <NavItem key={key}>
             <NavLink
-              to={prop.layout + prop.path}
+              to={layout + path}
               tag={NavLinkRRD}
-              onClick={prop.logout ? signOut : closeCollapse}
+              onClick={logout ? signOut : closeCollapse}
               activeClassName="active"
             >
-              <i className={prop.icon} />
-              {prop.name}
+              <i className={icon} />
+              {name}
             </NavLink>
           </NavItem>
         )
@@ -100,19 +74,14 @@ export default function Sidebar({ logo, routes }: SidebarProps) {
         >
           <span className="navbar-toggler-icon" />
         </button>
+
         {/* Brand */}
-        {logo ? (
-          <NavbarBrand className="pt-0" {...navbarBrandProps}>
-            <img
-              alt={logo.imgAlt}
-              className="navbar-brand-img"
-              src={logo.imgSrc}
-            />
-          </NavbarBrand>
-        ) : null}
-        {/* User */}
+        <NavbarBrand className="pt-0 text-medical">
+          <span>AppMédicoWeb</span>
+        </NavbarBrand>
+
         <Nav className="align-items-center d-md-none">
-          <UncontrolledDropdown nav>
+          {/* <UncontrolledDropdown nav>
             <DropdownToggle nav className="nav-link-icon">
               <i className="ni ni-bell-55" />
             </DropdownToggle>
@@ -126,12 +95,14 @@ export default function Sidebar({ logo, routes }: SidebarProps) {
               <DropdownItem divider />
               <DropdownItem>Something else here</DropdownItem>
             </DropdownMenu>
-          </UncontrolledDropdown>
+          </UncontrolledDropdown> */}
+
+          {/* User */}
           <UncontrolledDropdown nav>
             <DropdownToggle nav>
               <Media className="align-items-center">
                 <span className="avatar avatar-sm rounded-circle">
-                  <img alt="profile_picture" src={profile_picture} />
+                  <img alt="profile_picture" src={profile?.profile_picture} />
                 </span>
               </Media>
             </DropdownToggle>
@@ -146,24 +117,17 @@ export default function Sidebar({ logo, routes }: SidebarProps) {
             </DropdownMenu>
           </UncontrolledDropdown>
         </Nav>
+
         {/* Collapse */}
         <Collapse navbar isOpen={collapseOpen}>
           {/* Collapse header */}
           <div className="navbar-collapse-header d-md-none">
             <Row>
-              {logo ? (
-                <Col className="collapse-brand" xs="6">
-                  {logo.innerLink ? (
-                    <Link to={logo.innerLink}>
-                      <img alt={logo.imgAlt} src={logo.imgSrc} />
-                    </Link>
-                  ) : (
-                    <a href={logo.outterLink}>
-                      <img alt={logo.imgAlt} src={logo.imgSrc} />
-                    </a>
-                  )}
-                </Col>
-              ) : null}
+              <Col className="collapse-close" xs="6">
+                <NavbarBrand className="pt-0 text-medical">
+                  <span>AppMédicoWeb</span>
+                </NavbarBrand>
+              </Col>
               <Col className="collapse-close" xs="6">
                 <button
                   className="navbar-toggler"
@@ -176,22 +140,7 @@ export default function Sidebar({ logo, routes }: SidebarProps) {
               </Col>
             </Row>
           </div>
-          {/* Form */}
-          <Form className="mt-4 mb-3 d-md-none">
-            <InputGroup className="input-group-rounded input-group-merge">
-              <Input
-                aria-label="Search"
-                className="form-control-rounded form-control-prepended"
-                placeholder="Search"
-                type="search"
-              />
-              <InputGroupAddon addonType="prepend">
-                <InputGroupText>
-                  <span className="fa fa-search" />
-                </InputGroupText>
-              </InputGroupAddon>
-            </InputGroup>
-          </Form>
+
           {/* Navigation */}
           <Nav navbar>{createLinks(routes)}</Nav>
           {/* Divider */}

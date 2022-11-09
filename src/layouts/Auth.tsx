@@ -30,9 +30,12 @@ import {
 import { ExceptionMessages } from "../utils/messages";
 import { decodeExceptionObject } from "../utils/helpers";
 
+import SignForm from "../components/SingIn/SingInForm";
+import axios from "../utils/axios";
+
 enum Provider {
   admin_nurse = "admin_nurse",
-  specialized_doctor = "specialized_doctor"
+  specialized_doctor = "doctor",
 }
 
 export default function Auth() {
@@ -41,70 +44,13 @@ export default function Auth() {
 
   const { showAlert }: any = usePropsContext();
 
-  const [loading, setLoading] = React.useState<boolean>(false);
-  const [credentials, setCredentials] = React.useState<Credentials>({
-    authenticator: "",
-    password: "",
-  });
-
-  const handleInput = (target: HTMLInputElement) => {
-    const { name, value } = target;
-    setCredentials((prev: any) => ({ ...prev, [name]: value }));
-  };
-
-  async function authenticate(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-
-    const { authenticator, password } = credentials;
-
-    if (authenticator === "" || password === "") {
-      showAlert({
-        open: true,
-        type: AlertType.danger,
-        message: "Preencha todos os campos para continuar!",
-      });
-      return;
-    }
-
-    setLoading(true);
-
-    try {
-      const { data } = await api.post<AwaitedApiToken>("/signin", {
-        login: authenticator,
-        password,
-        provider: Provider.specialized_doctor,
-      });
-
-      const { token } = data.response;
-
-      storageSessionToken(data.response);
-
-      const profile = await api.get<AwaitedApiProfile>("/doctors", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      storageProfile(profile.data.response);
-
-      window.location.href = "/#/admin/agenda";
-    } catch (err: any) {
-      showAlert({
-        open: true,
-        type: AlertType.danger,
-        message: decodeExceptionObject(err, ExceptionMessages.user_dont_exist),
-      });
-    } finally {
-      setLoading(false);
-    }
-  }
-
   React.useEffect(() => {
     if (mainContent.current) {
       document.documentElement.scrollTop = 0;
       mainContent.current.scrollTop = 0;
     }
   }, [location]);
+
 
   return (
     <div className="main-content bg-white" ref={mainContent}>
@@ -119,9 +65,7 @@ export default function Auth() {
                   alt="medico-aqui"
                   src={require("../assets/img/brand/logo.png")}
                 />
-                <p className="text-lead text-black mt-4">
-                  Painel Médico
-                </p>
+                <p className="text-lead text-black mt-4">Painel Médico</p>
               </Col>
             </Row>
           </div>
@@ -136,55 +80,8 @@ export default function Auth() {
                 <div className="text-center text-black mb-4">
                   <small>Acesse com suas credenciais</small>
                 </div>
-                <Form role="form" onSubmit={authenticate}>
-                  <FormGroup className="mb-3">
-                    <InputGroup className="input-group-alternative">
-                      <InputGroupAddon addonType="prepend">
-                        <InputGroupText>
-                          <i className="ni ni-email-83" />
-                        </InputGroupText>
-                      </InputGroupAddon>
-                      <Input
-                        name="authenticator"
-                        placeholder="Email *"
-                        type="email"
-                        autoComplete="authenticator"
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                          handleInput(e.target)
-                        }
-                      />
-                    </InputGroup>
-                  </FormGroup>
-                  <FormGroup>
-                    <InputGroup className="input-group-alternative">
-                      <InputGroupAddon addonType="prepend">
-                        <InputGroupText>
-                          <i className="ni ni-lock-circle-open" />
-                        </InputGroupText>
-                      </InputGroupAddon>
-                      <Input
-                        name="password"
-                        placeholder="Senha *"
-                        type="password"
-                        autoComplete="password"
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                          handleInput(e.target)
-                        }
-                      />
-                    </InputGroup>
-                  </FormGroup>
-                  <div className="text-center">
-                    <Button className="my-4" color="secondary" type="submit">
-                      {loading ? (
-                        <Spinner animation="border" role="status" size="sm">
-                          <span className="visually-hidden">Carregando...</span>
-                        </Spinner>
-                      ) : (
-                        "Entrar"
-                      )}
-                    </Button>
-                  </div>
-                </Form>
+
+                <SignForm />
               </CardBody>
             </Card>
             <Row className="mt-3">

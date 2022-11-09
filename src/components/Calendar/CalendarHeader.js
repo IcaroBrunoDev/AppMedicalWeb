@@ -1,42 +1,20 @@
-import * as React from "react";
-import {
-  Col,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  Media,
-  Row,
-  UncontrolledDropdown,
-} from "reactstrap";
+import React from "react";
+import { Col, Row } from "reactstrap";
 import { formatCurrentDate } from "../../utils/calendar";
 
-import AvailabilityWarning from "../Availability/AvailabilityWarning";
+// import AvailabilityWarning from "../Availability/AvailabilityWarning";
 
 export default function CalendarHeader(props) {
   const {
     currentDate,
     setCurrentDate,
-    selectedDoctor,
-    onChangeDoctor,
-    locationDoctors,
     handlePrevMonth,
     handleNextMonth,
     schedulesLength,
     setCreateNewSchedule,
   } = props;
 
-  const [availabilityWarning, setAvailabilityWarning] = React.useState(false);
-
-  React.useEffect(() => {
-    if (selectedDoctor && !selectedDoctor.availability) {
-      setAvailabilityWarning(true);
-    }
-  }, [selectedDoctor]);
-
-  const handleDoctor = (e, doctor) => {
-    e.preventDefault();
-    onChangeDoctor(doctor);
-  };
+  // const [availabilityWarning, setAvailabilityWarning] = React.useState(false);
 
   return (
     <>
@@ -76,32 +54,25 @@ export default function CalendarHeader(props) {
                 Esse Mês
               </button>
 
-              <div className="arrow">
-                <i
-                  id="prevArrow"
-                  onClick={handlePrevMonth}
-                  className="fa-solid fa-chevron-left"
-                ></i>
+              <div className="arrow" onClick={handlePrevMonth}>
+                <i id="prevArrow" className="fa-solid fa-chevron-left" />
               </div>
-              <div className="arrow">
-                <i
-                  id="nextArrow"
-                  onClick={handleNextMonth}
-                  className="fa-solid fa-chevron-right"
-                ></i>
+
+              <div className="arrow" onClick={handleNextMonth}>
+                <i id="nextArrow" className="fa-solid fa-chevron-right" />
               </div>
             </Col>
           </Row>
         </Col>
       </Row>
 
-      {availabilityWarning && (
+      {/* {availabilityWarning && (
         <AvailabilityWarning
           open={availabilityWarning}
           doctor={selectedDoctor}
           onClose={() => setAvailabilityWarning(false)}
         />
-      )}
+      )} */}
     </>
   );
 }

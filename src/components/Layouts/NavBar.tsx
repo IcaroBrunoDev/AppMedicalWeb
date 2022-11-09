@@ -36,7 +36,7 @@ export default function AdminNavbar({ brandText }: AdminNavbarProps) {
   React.useEffect(() => {
     const getAttendanceLocations = async () => {
       try {
-        const { data } = await api.get("/linked-locations");
+        const { data } = await api.get("/places");
 
         if (data.response.length > 0) {
           setSelectedLocation(data.response[0]);

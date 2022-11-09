@@ -9,7 +9,7 @@ import {
 import CalendarMarker from "./CalendarMarker";
 import CalendarScheduling from "../Schedules/CreateSchedule";
 
-export default function CalendarComponent(props) {
+function CalendarComponent(props) {
   const {
     schedules,
     currentDate,
@@ -18,10 +18,7 @@ export default function CalendarComponent(props) {
     totalDaysInMonth,
   } = props;
 
-  const [createSchedule, setCreateSchedule] = React.useState({
-    open: false,
-    date: null,
-  });
+  console.log("Calendar Rendering", schedules, currentDate);
 
   const renderCorrectDays = (currentIndex) => {
     return tableColumn(currentIndex, initialDayIndex);
@@ -31,41 +28,47 @@ export default function CalendarComponent(props) {
     const today = new Date();
 
     return currentIndex === dayIndex ? (
-      <td
-        onClick={() =>
-          setCreateSchedule({ open: true, date: formateDateToString(today) })
-        }
-      >
-        <div
-          className={`${isActiveDay(today, currentIndex) ? "active" : ""} mb-2`}
-        >
-          <span>{1}</span>
-        </div>
-      </td>
+      <tr key={currentIndex}>
+        <td>
+          <div
+            className={`${
+              isActiveDay(today, currentIndex) ? "active" : ""
+            } mb-2`}
+          >
+            <span>{1}</span>
+          </div>
+        </td>
+      </tr>
     ) : currentIndex > dayIndex ? (
-      <td>
-        <div
-          className={`${isActiveDay(today, currentIndex) ? "active" : ""} mb-2`}
-        >
-          <span>
-            {dayIndex > 1 && currentIndex - (dayIndex - 1)}
-            {/** Excessão para quando os dias iniciais forem 1, o currentIndex aqui tem ovalor de 2 */}
-            {dayIndex === 1 && currentIndex}
-            {/** Excessão para quando os dias iniciais forem 0, o currentIndex aqui tem o valor de 1 */}
-            {dayIndex === 0 && currentIndex + 1}
-          </span>
-        </div>
+      <tr key={currentIndex}>
+        <td key={currentIndex}>
+          <div
+            className={`${
+              isActiveDay(today, currentIndex) ? "active" : ""
+            } mb-2`}
+          >
+            <span>
+              {dayIndex > 1 && currentIndex - (dayIndex - 1)}
+              {/** Excessão para quando os dias iniciais forem 1, o currentIndex aqui tem ovalor de 2 */}
+              {dayIndex === 1 && currentIndex}
+              {/** Excessão para quando os dias iniciais forem 0, o currentIndex aqui tem o valor de 1 */}
+              {dayIndex === 0 && currentIndex + 1}
+            </span>
+          </div>
 
-        {filterMonthEvents(
-          schedules,
-          currentDate,
-          currentIndex + 1 - initialDayIndex
-        ).map((event, index) => (
-          <CalendarMarker key={index} {...event} />
-        ))}
-      </td>
+          {filterMonthEvents(
+            schedules,
+            currentDate,
+            currentIndex + 1 - initialDayIndex
+          ).map((event, index) => (
+            <CalendarMarker key={index} {...event} />
+          ))}
+        </td>
+      </tr>
     ) : (
-      <td className="empty-td"></td>
+      <tr key={currentIndex}>
+        <td key={currentIndex} className="empty-td"></td>
+      </tr>
     );
   };
 
@@ -101,14 +104,15 @@ export default function CalendarComponent(props) {
         <table>
           <thead>
             {daysOfWeek.map((day, index) => (
-              <th
-                key={index}
-                className={
-                  isActiveDoctorDay(day) ? "bg-medical text-white" : ""
-                }
-              >
-                {day.name}{" "}
-              </th>
+              <tr key={index}>
+                <th
+                  className={
+                    isActiveDoctorDay(day) ? "bg-medical text-white" : ""
+                  }
+                >
+                  {day.name}{" "}
+                </th>
+              </tr>
             ))}
           </thead>
           <tbody>
@@ -118,15 +122,10 @@ export default function CalendarComponent(props) {
           </tbody>
         </table>
       </div>
-
-      {createSchedule.open && (
-        <CalendarScheduling
-          open={createSchedule.open}
-          onClose={() => setCreateSchedule({ open: false, date: null })}
-        />
-      )}
     </>
   ) : (
     <></>
   );
 }
+
+export default React.memo(CalendarComponent);

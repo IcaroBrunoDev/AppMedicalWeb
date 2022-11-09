@@ -16,6 +16,7 @@ import {
   getMonthFirstDay,
   getLastMonthDay,
 } from "../../utils/calendar";
+
 import { getStoragedProfile } from "../../utils/caches";
 import { usePropsContext } from "../..";
 
@@ -25,26 +26,22 @@ export default function Calendar() {
   const { showAlert, selectedLocationId }: any = usePropsContext();
 
   const [schedules, setSchedules] = React.useState<any>([]);
-  const [selectedDoctor, setSelectedDoctor] = React.useState<any>(null);
-  const [locationDoctors, setLocationDoctors] = React.useState([]);
 
   /** Dates States */
-  const [currentDate, setCurrentDate] = React.useState<any>(new Date());
-  const [initialDayIndex, setInitialDayIndex] = React.useState<any>(undefined);
-  const [totalDaysInMonth, setTotalDaysInMonth] = React.useState<any>(null);
+  const [currentDate, setCurrentDate] = React.useState<Date>(new Date());
+  const [initialDayIndex, setInitialDayIndex] = React.useState<number>(
+    getMonthFirstDayIndex(new Date())
+  );
+  const [totalDaysInMonth, setTotalDaysInMonth] = React.useState<number>(
+    calcTotalDaysInMonth(new Date())
+  );
 
   /** Ui Components States */
   const [createSchedule, setCreateSchedule] = React.useState<boolean>(false);
+  const [updateComponent, setUpdateComponent] = React.useState<number>(0);
 
-  const [updateComponent, setUpdateComponent] = React.useState(false);
-
-  React.useEffect(() => {
-    setInitialDayIndex(getMonthFirstDayIndex(currentDate));
-    setTotalDaysInMonth(calcTotalDaysInMonth(currentDate));
-  }, [currentDate]);
-
-  React.useEffect(() => {
-    const getDoctorSchedules = async () => {
+  React.useMemo(() => {
+    (async () => {
       try {
         const initial_date = getMonthFirstDay(currentDate);
         const final_date = getLastMonthDay(currentDate);
@@ -53,39 +50,36 @@ export default function Calendar() {
           `/doctors/${doctor.id}/${selectedLocationId}/schedules?initial_date=${initial_date}&final_date=${final_date}`
         );
 
-        setSchedules(data.response);
+        if (data.response.length > 0) setSchedules(data.response);
       } catch (err) {
         showAlert({ open: true, type: "danger", message: err });
       }
-    };
-
-    getDoctorSchedules();
-  }, [currentDate]);
+    })();
+  }, [currentDate, updateComponent]);
 
   const handlePrevMonth = () => {
     const prevMonth = getPrevMonth(currentDate);
     setCurrentDate(prevMonth);
+    handleMonthIndex(prevMonth);
   };
 
   const handleNextMonth = () => {
     const nextMonth = getNextMonth(currentDate);
     setCurrentDate(nextMonth);
+    handleMonthIndex(nextMonth);
   };
 
-  const createShedule = () => {
-    setCreateSchedule(true);
+  const handleMonthIndex = (currentDate: any) => {
+    setInitialDayIndex(getMonthFirstDayIndex(currentDate));
+    setTotalDaysInMonth(calcTotalDaysInMonth(currentDate));
   };
 
   const onRefreshCalendar = () => {
-    setUpdateComponent(!updateComponent);
-  };
-
-  const onChangeDoctor = (doctor: any | null) => {
-    setSelectedDoctor(doctor ?? null);
+    setUpdateComponent(updateComponent + 1);
   };
 
   return (
-    <React.Suspense>
+    <>
       <Header />
       <Container className="mt--9" fluid>
         <Row>
@@ -95,20 +89,16 @@ export default function Calendar() {
                 <CalendarHeader
                   currentDate={currentDate}
                   setCurrentDate={setCurrentDate}
-                  selectedDoctor={selectedDoctor}
-                  onChangeDoctor={onChangeDoctor}
-                  locationDoctors={locationDoctors}
                   handlePrevMonth={handlePrevMonth}
                   handleNextMonth={handleNextMonth}
                   schedulesLength={schedules.length}
-                  setCreateNewSchedule={createShedule}
+                  setCreateNewSchedule={() => setCreateSchedule(true)}
                 />
               </CardHeader>
               <CardBody>
                 <CalendarComponent
                   schedules={schedules}
                   currentDate={currentDate}
-                  selectedDoctor={selectedDoctor}
                   initialDayIndex={initialDayIndex}
                   totalDaysInMonth={totalDaysInMonth}
                 />
@@ -121,11 +111,10 @@ export default function Calendar() {
       {createSchedule && (
         <CalendarScheduling
           open={createSchedule}
-          selectedDoctor={selectedDoctor}
           onClose={() => setCreateSchedule(false)}
           onRefreshCalendar={onRefreshCalendar}
         />
       )}
-    </React.Suspense>
+    </>
   );
 }

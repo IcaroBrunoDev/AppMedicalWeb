@@ -1,6 +1,6 @@
-export const formatCurrentDate = (currentDate: any) => {
-  const month = currentDate.getMonth();
-  const year = currentDate.getFullYear();
+export const formatCurrentDate = (currentDate: Date): string => {
+  const month: number = currentDate.getMonth();
+  const year: number = currentDate.getFullYear();
 
   switch (month) {
     case 0:
@@ -27,6 +27,8 @@ export const formatCurrentDate = (currentDate: any) => {
       return `Novembro de ${year}`;
     case 11:
       return `Dezembro de ${year}`;
+    default:
+      return "Houve um Erro";
   }
 };
 
@@ -48,20 +50,20 @@ export const getLastMonthDay = (currentDate: any) => {
   return formateDateToString(lastMonthDay);
 };
 
-export const getMonthFirstDayIndex = (currentDate: any) => {
-  const currentMonth = currentDate.getMonth();
-  const currentYear = currentDate.getFullYear();
+export const getMonthFirstDayIndex = (currentDate: Date) => {
+  const currentMonth: number = currentDate.getMonth();
+  const currentYear: number = currentDate.getFullYear();
 
-  const firstMonthDay = new Date(currentYear, currentMonth, 1);
-  const firstDayIndex = firstMonthDay.getDay();
+  const firstMonthDay: Date = new Date(currentYear, currentMonth, 1);
+  const firstDayIndex: number = firstMonthDay.getDay();
 
   return firstDayIndex;
 };
 
-export const calcTotalDaysInMonth = (currentDate: any) => {
-  const year = currentDate.getFullYear();
-  const month = currentDate.getMonth() + 1;
-  const totaldays = new Date(year, month, 0).getDate();
+export const calcTotalDaysInMonth = (currentDate: Date) => {
+  const year: number = currentDate.getFullYear();
+  const month: number = currentDate.getMonth() + 1;
+  const totaldays: number = new Date(year, month, 0).getDate();
 
   return totaldays;
 };

@@ -26,21 +26,21 @@ export default function MyLocations() {
   const [attendanceLinks, setAttendanceLinks] = React.useState<any[]>([]);
 
   React.useEffect(() => {
-    const loadingAttendanceLinks = async () => {
-      try {
-        setLoading(true);
+    // const loadingAttendanceLinks = async () => {
+    //   try {
+    //     setLoading(true);
 
-        const { data } = await api.get(`/linked-locations`);
+    //     const { data } = await api.get(`/links`);
 
-        setAttendanceLinks(data.response);
-      } catch (err) {
-        showAlert({ open: true, type: "danger", message: err });
-      } finally {
-        setLoading(false);
-      }
-    };
+    //     setAttendanceLinks(data.response);
+    //   } catch (err) {
+    //     showAlert({ open: true, type: "danger", message: err });
+    //   } finally {
+    //     setLoading(false);
+    //   }
+    // };
 
-    loadingAttendanceLinks();
+    // loadingAttendanceLinks();
   }, []);
 
   return (

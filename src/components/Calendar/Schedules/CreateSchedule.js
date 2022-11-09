@@ -37,12 +37,7 @@ const defaultErrors = {
 };
 
 export default function CalendarScheduling(props) {
-  const {
-    open,
-    selectedDoctor,
-    onClose,
-    onRefreshCalendar,
-  } = props;
+  const { open, selectedDoctor, onClose, onRefreshCalendar } = props;
   const { showAlert, selectedLocationId } = usePropsContext();
 
   const [loading, setLoading] = React.useState(false);
@@ -52,6 +47,8 @@ export default function CalendarScheduling(props) {
   const [schedule, setSchedule] = React.useState(defaultSchedule);
   const [patientsFound, setPatientsFound] = React.useState([]);
 
+  console.log("Create Schedule Render");
+
   const handleInputData = (event) => {
     const { target } = event;
 
@@ -59,7 +56,6 @@ export default function CalendarScheduling(props) {
       ...prev,
       [target.name]: target.value === "" ? null : target.value,
     }));
-    return;
   };
 
   const handlePatient = (patient) => {
@@ -163,12 +159,12 @@ export default function CalendarScheduling(props) {
                       {!searchLoading ? (
                         !schedule.patient ? (
                           <i
-                            class="text-sm fa-solid fa-magnifying-glass"
+                            className="text-sm fa-solid fa-magnifying-glass"
                             onClick={searchPatient}
                           ></i>
                         ) : (
                           <i
-                            class="text-sm fa-solid fa-xmark"
+                            className="text-sm fa-solid fa-xmark"
                             onClick={() => handlePatient(null)}
                           ></i>
                         )
@@ -178,9 +174,7 @@ export default function CalendarScheduling(props) {
                           role="status"
                           size="sm"
                           className="text-medical"
-                        >
-                          <span className="visually-hidden">Carregando...</span>
-                        </Spinner>
+                        ></Spinner>
                       )}
                     </InputGroupText>
                   </InputGroupAddon>
@@ -204,7 +198,7 @@ export default function CalendarScheduling(props) {
                     </div>
                     {patientsFound.map((patient, index) => (
                       <div
-                        key={index}
+                        key={`${patient.name}_${index}`}
                         className="cards"
                         onClick={() => handlePatient(patient)}
                       >
@@ -318,14 +312,16 @@ export default function CalendarScheduling(props) {
                   id="hour"
                   placeholder="Escolha um Horário para a Consulta"
                   type="select"
+                  defaultValue={null}
                   onChange={(event) => handleInputData(event)}
                 >
-                  <option value="" selected>
-                    Selecione o Horário da Consulta
-                  </option>
+                  <option value={null}>Selecione o Horário da Consulta</option>
 
                   {new Array(11).fill(1).map((key, index) => (
-                    <option value={formatHour(index, 8)}>
+                    <option
+                      key={`${key}_${index}`}
+                      value={formatHour(index, 8)}
+                    >
                       {formatHour(index, 8)}
                     </option>
                   ))}
@@ -348,11 +344,10 @@ export default function CalendarScheduling(props) {
                   id="status"
                   placeholder="Escolha um Horário para a Consulta"
                   type="select"
+                  defaultValue={null}
                   onChange={(event) => handleInputData(event)}
                 >
-                  <option value="" selected>
-                    Selecione o Status da Consulta
-                  </option>
+                  <option value={null}>Selecione o Status da Consulta</option>
                   <option value="CONFIRMED">Confirmado</option>
                   <option value="PENDING">Pendente</option>
                   <option value="CANCELED">Cancelado</option>
@@ -406,9 +401,7 @@ export default function CalendarScheduling(props) {
               role="status"
               size="sm"
               className="text-white"
-            >
-              <span className="visually-hidden">Carregando...</span>
-            </Spinner>
+            ></Spinner>
           ) : (
             "Agendar Consulta"
           )}

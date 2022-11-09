@@ -3,7 +3,7 @@ import * as React from "react";
 import CalendarViewSchedule from "../Schedules/ViewSchedule";
 
 export default function CalendarMarker(props) {
-  const { key, status, event_name, hour } = props;
+  const { status, event_name, hour } = props;
 
   const [eventModal, setEventModal] = React.useState(false);
 
@@ -23,7 +23,7 @@ export default function CalendarMarker(props) {
   return (
     <>
       <div
-        key={key}
+        key={`${event_name}_${hour}`}
         className={`w-100 calendar-marker justify-content-between py-1 px-1 text-left ${markerBackground(
           status
         )}`}
@@ -38,7 +38,7 @@ export default function CalendarMarker(props) {
         </div>
 
         <div>
-          <i class="fa-solid fa-clock-rotate-left text-white mr-1"></i>
+          <i className="fa-solid fa-clock-rotate-left text-white mr-1"></i>
           <span className="text-white">{hour}</span>
         </div>
       </div>

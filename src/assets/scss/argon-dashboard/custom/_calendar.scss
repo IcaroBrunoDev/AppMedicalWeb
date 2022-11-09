@@ -25,6 +25,10 @@
   i {
     font-size: 1rem;
   }
+
+  &:focus {
+    border: 0.5px solid $medical;
+  }
 }
 
 .calendar-marker {
@@ -35,7 +39,6 @@
   align-items: center;
   font-size: 0.8rem;
   cursor: pointer;
-  
 
   &:hover {
     background-color: $gray-200;
@@ -53,25 +56,31 @@
     border-left: 1px solid $gray-400;
 
     thead {
+
+      width: 100%;
+
       display: flex;
       flex-direction: row;
       flex-wrap: nowrap;
-
-      th {
-        text-align: center;
-        padding: 0.6rem 0;
+      tr {
         width: calc(100% / 7);
-        min-width: 150px;
-        border-top: 1px solid $gray-400;
-        border-right: 1px solid $gray-400;
-        border-bottom: 1px solid $gray-400;
-        font-weight: normal;
-        font-size: 15px;
-        color: $medical;
-        background-color: $gray-100;
 
-        @media screen and (max-width: 767px) {
-          margin: 0rem 0rem;
+        th {
+          text-align: center;
+          padding: 0.6rem 0;
+          width: calc(100% / 7);
+          min-width: 150px;
+          border-top: 1px solid $gray-400;
+          border-right: 1px solid $gray-400;
+          border-bottom: 1px solid $gray-400;
+          font-weight: normal;
+          font-size: 15px;
+          color: $medical;
+          background-color: $gray-100;
+
+          @media screen and (max-width: 767px) {
+            margin: 0rem 0rem;
+          }
         }
       }
     }
@@ -85,33 +94,38 @@
         background-color: $gray-100;
       }
 
-      td {
-        display: flex;
-        flex-direction: column;
-        text-align: center;
-        padding-top: 0.6rem;
+      tr {
+
         width: calc(100% / 7);
-        min-width: 150px;
-        min-height: 8rem;
-        border-right: 1px solid $gray-400;
-        border-bottom: 1px solid $gray-400;
-        cursor: pointer;
 
-        .active {
-          span {
-            font-size: 14px;
-          }
-
+        td {
           display: flex;
-          justify-content: center;
-          align-items: center;
-          background-color: $medical;
-          width: 25px;
-          height: 25px;
-          align-self: center !important;
-          color: $white;
+          flex-direction: column;
+          text-align: center;
+          padding-top: 0.6rem;
+          width: 100%;
+       
+          min-height: 8rem;
+          border-right: 1px solid $gray-400;
+          border-bottom: 1px solid $gray-400;
+          cursor: pointer;
 
-          border-radius: 100%;
+          .active {
+            span {
+              font-size: 14px;
+            }
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: $medical;
+            width: 25px;
+            height: 25px;
+            align-self: center !important;
+            color: $white;
+
+            border-radius: 100%;
+          }
         }
       }
     }

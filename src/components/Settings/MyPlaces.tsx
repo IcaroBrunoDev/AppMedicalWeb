@@ -10,34 +10,15 @@ import {
   DropdownToggle,
   Row,
   Col,
-  Spinner,
   Media,
   Table,
   Badge,
 } from "reactstrap";
 
-import { useAlert } from "../../context/AlertProvider";
+import { usePlaces } from "../../context/PlacesProvider";
 
-export default function MyLocations() {
-  const { showAlert } = useAlert();
-
-  const [loading, setLoading] = React.useState<boolean>(false);
-  const [attendanceLinks, setAttendanceLinks] = React.useState<any[]>([]);
-
-  React.useEffect(() => {
-    // const loadingAttendanceLinks = async () => {
-    //   try {
-    //     setLoading(true);
-    //     const { data } = await api.get(`/links`);
-    //     setAttendanceLinks(data.response);
-    //   } catch (err) {
-    //     showAlert({ open: true, type: "danger", message: err });
-    //   } finally {
-    //     setLoading(false);
-    //   }
-    // };
-    // loadingAttendanceLinks();
-  }, []);
+export default function MyPlaces() {
+  const { locations } = usePlaces();
 
   return (
     <Card className="shadow">
@@ -47,16 +28,14 @@ export default function MyLocations() {
             <h3 className="mb-0">Meus Locais de Atendimento</h3>
             <small>
               Total de:{" "}
-              <b className="text-custom-purple">
-                {attendanceLinks?.length ?? "0"}
-              </b>{" "}
+              <b className="text-custom-purple">{locations?.length ?? "0"}</b>{" "}
               Locais de Atendimento
             </small>
           </Col>
         </Row>
       </CardHeader>
 
-      {attendanceLinks.length > 0 && !loading ? (
+      {locations.length > 0 ? (
         <>
           <Table className="align-items-center table-flush" responsive>
             <thead className="thead-light">
@@ -64,10 +43,10 @@ export default function MyLocations() {
                 <th scope="col">Local de Atendimento</th>
                 <th scope="col">Status da Vinculacão</th>
                 <th scope="col">Telefone do Estabelecimento</th>
-                <th scope="col"></th>
+                <th scope="col" />
               </tr>
             </thead>
-            {attendanceLinks.map((data: any, index: any) => (
+            {locations.map((data: any, index: any) => (
               <tbody key={index}>
                 <tr>
                   <th scope="row">
@@ -83,22 +62,18 @@ export default function MyLocations() {
                     </Media>
                   </th>
                   <td>
-                    {" "}
                     <Badge color="" className="badge-dot mr-4">
                       <i className="bg-success" />
                       Ativo
                     </Badge>
                   </td>
-
                   <td>
                     <span>{data.location.local_primary_phone}</span>
                   </td>
-
                   <td className="text-center">
                     <UncontrolledDropdown>
                       <DropdownToggle
                         className="btn-icon-only text-light"
-                        href="/"
                         role="button"
                         size="sm"
                         onClick={(e) => e.preventDefault()}
@@ -106,7 +81,7 @@ export default function MyLocations() {
                         <i className="fas fa-ellipsis-v" />
                       </DropdownToggle>
                       <DropdownMenu className="dropdown-menu-arrow" right>
-                        <DropdownItem href="/">Remover Vínculo</DropdownItem>
+                        <DropdownItem>Remover Vínculo</DropdownItem>
                       </DropdownMenu>
                     </UncontrolledDropdown>
                   </td>
@@ -114,15 +89,8 @@ export default function MyLocations() {
               </tbody>
             ))}
           </Table>
-
           <CardFooter className="py-4" />
         </>
-      ) : loading ? (
-        <div className="text-center py-4 text-dark">
-          <Spinner animation="border" role="status" size="lg">
-            <span className="visually-hidden">Carregando...</span>
-          </Spinner>
-        </div>
       ) : (
         <div className="text-center py-4 text-sm">
           <span>Essa Lista Está Vazia por Enquanto...</span>

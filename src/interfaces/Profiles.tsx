@@ -1,8 +1,3 @@
-export enum ProfessionalProfiles {
-  doctor = "doctor",
-  health_professional = "health_professional",
-}
-
 export interface AdminNurseCreate {
   email: string | null;
   fullname: string | null;
@@ -30,4 +25,17 @@ export interface ProfessionalCreate {
   cpf: string | null;
 }
 
-export interface ProfessionalRead {}
+export interface Patient {
+  id: number;
+  cpf: string;
+  email: string;
+  login: string;
+  phone: string;
+  sus_card: string | null;
+  fullname: string;
+  first_access: boolean;
+  birthdate: string;
+  profile_picture: string | null;
+  created_at: string;
+  updated_at: string;
+}

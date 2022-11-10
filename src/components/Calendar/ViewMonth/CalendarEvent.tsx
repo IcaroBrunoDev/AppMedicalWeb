@@ -2,18 +2,30 @@ import * as React from "react";
 
 import CalendarViewSchedule from "../Schedules/ViewSchedule";
 
-export default function CalendarMarker(props) {
+export enum EventStatus {
+  confirmed = "CONFIRMED",
+  pending = "PENDING",
+  canceled = "CANCELED",
+}
+
+interface CalendarEvent {
+  status: EventStatus;
+  event_name: string;
+  hour: string;
+}
+
+export default function CalendarEvent(props: CalendarEvent) {
   const { status, event_name, hour } = props;
 
   const [eventModal, setEventModal] = React.useState(false);
 
-  const markerBackground = (status) => {
+  const markerBackground = (status: EventStatus) => {
     switch (status) {
-      case "CONFIRMED":
+      case EventStatus.confirmed:
         return "bg-medical";
-      case "PENDING":
+      case EventStatus.pending:
         return "bg-warning";
-      case "CANCELED":
+      case EventStatus.canceled:
         return "bg-danger";
       default:
         return "bg-danger";

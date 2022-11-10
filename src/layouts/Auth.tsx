@@ -5,8 +5,6 @@ import { Container, Card, CardBody, Row, Col } from "reactstrap";
 
 import SignForm from "../components/SingIn/SingInForm";
 
-
-
 export default function Auth() {
   const location = useLocation();
   const mainContent = React.useRef<HTMLDivElement>(null);
@@ -46,7 +44,6 @@ export default function Auth() {
                 <div className="text-center text-black mb-4">
                   <small>Acesse com suas credenciais</small>
                 </div>
-
                 <SignForm />
               </CardBody>
             </Card>

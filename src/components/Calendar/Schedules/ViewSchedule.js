@@ -15,11 +15,6 @@ export default function CalendarViewSchedule(props) {
           <h6 className="heading-small text-dark ml-2 ">Dados Do Pacitente</h6>
           <Col lg="12" className="border-bottom pb-3">
             <div className="d-flex flex-row align-items-center">
-              {/* <img
-                src={require("../../assets/img/theme/icon-user.png")}
-                width="50px"
-                height="50px"
-              /> */}
               <div className="w-100 d-flex flex-row justify-content-between">
                 <p className="text-dark font-weight-500 ml-3 m-0">
                   <span className="text-medical font-weight-600 text-underline">

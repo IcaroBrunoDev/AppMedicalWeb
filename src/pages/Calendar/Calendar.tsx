@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { Card, CardHeader, CardBody, Container, Row } from "reactstrap";
+import { Card, CardHeader, CardBody, Row } from "reactstrap";
 
 import CalendarHeader from "../../components/Calendar/CalendarHeader";
 import CalendarComponent from "../../components/Calendar/ViewMonth/Calendar";

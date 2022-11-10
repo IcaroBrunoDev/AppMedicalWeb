@@ -2,9 +2,16 @@ import React from "react";
 import { Col, Row } from "reactstrap";
 import { formatCurrentDate } from "../../utils/calendar";
 
-// import AvailabilityWarning from "../Availability/AvailabilityWarning";
+interface CalendarHeader {
+  currentDate: Date;
+  setCurrentDate: (date: Date) => void;
+  handlePrevMonth: () => void;
+  handleNextMonth: () => void;
+  schedulesLength: number;
+  setCreateNewSchedule: () => void;
+}
 
-export default function CalendarHeader(props) {
+export default function CalendarHeader(props: CalendarHeader) {
   const {
     currentDate,
     setCurrentDate,
@@ -13,8 +20,6 @@ export default function CalendarHeader(props) {
     schedulesLength,
     setCreateNewSchedule,
   } = props;
-
-  // const [availabilityWarning, setAvailabilityWarning] = React.useState(false);
 
   return (
     <>

@@ -1,22 +1,18 @@
 import * as React from "react";
 
-import { Container, Row, Col } from "reactstrap";
+import { Row, Col } from "reactstrap";
 
+import MyPlaces from "../../components/Settings/MyPlaces";
 import MyProfile from "../../components/Settings/MyProfile";
-import MyLocation from "../../components/Settings/MyLocation";
-import LinkedLocations from "../../components/Settings/LinkedLocations";
 
 export default function Settings() {
   return (
     <Row>
-      <Col className="mb-5" lg="6">
+      <Col className="mb-5" lg="12">
         <MyProfile />
       </Col>
-      <Col className="mb-5" lg="6">
-        <MyLocation />
-      </Col>
       <Col className="mb-5" lg="12">
-        <LinkedLocations />{" "}
+        <MyPlaces />
       </Col>
     </Row>
   );

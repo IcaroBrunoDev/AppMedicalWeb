@@ -1,30 +1,27 @@
 import * as React from "react";
 
+import CalendarEvent from "./CalendarEvent";
+
 import { daysOfWeek } from "../../../utils/constants";
-import {
-  filterMonthEvents,
-  formateDateToString,
-} from "../../../utils/calendar";
+import { filterMonthEvents } from "../../../utils/calendar";
 
-import CalendarMarker from "./CalendarMarker";
-import CalendarScheduling from "../Schedules/CreateSchedule";
+import { Schedules } from "../../../interfaces/Schedules";
 
-function CalendarComponent(props) {
-  const {
-    schedules,
-    currentDate,
-    selectedDoctor,
-    initialDayIndex,
-    totalDaysInMonth,
-  } = props;
+interface CalendarComponent {
+  schedules: Schedules[];
+  currentDate: Date;
+  initialDayIndex: number;
+  totalDaysInMonth: number;
+}
 
-  console.log("Calendar Rendering", schedules, currentDate);
+function CalendarComponent(props: CalendarComponent) {
+  const { schedules, currentDate, initialDayIndex, totalDaysInMonth } = props;
 
-  const renderCorrectDays = (currentIndex) => {
+  const renderCorrectDays = (currentIndex: number) => {
     return tableColumn(currentIndex, initialDayIndex);
   };
 
-  const tableColumn = (currentIndex, dayIndex) => {
+  const tableColumn = (currentIndex: number, dayIndex: number) => {
     const today = new Date();
 
     return currentIndex === dayIndex ? (
@@ -61,7 +58,7 @@ function CalendarComponent(props) {
             currentDate,
             currentIndex + 1 - initialDayIndex
           ).map((event, index) => (
-            <CalendarMarker key={index} {...event} />
+            <CalendarEvent key={index} {...event} />
           ))}
         </td>
       </tr>
@@ -72,28 +69,13 @@ function CalendarComponent(props) {
     );
   };
 
-  const isActiveDay = (today, currentIndex) => {
+  const isActiveDay = (today: Date, currentIndex: number) => {
     if (
       today.getDate() === currentIndex + 1 - initialDayIndex &&
       today.getMonth() === currentDate.getMonth() &&
       today.getFullYear() === currentDate.getFullYear()
     ) {
       return true;
-    }
-    return false;
-  };
-
-  const isActiveDoctorDay = (day) => {
-    if (selectedDoctor && selectedDoctor.availability) {
-      const keys = Object.keys(selectedDoctor.availability.availabilitie);
-
-      const isActive = keys.find((element) => element === day.objectName);
-
-      if (isActive) {
-        return true;
-      }
-
-      return false;
     }
     return false;
   };
@@ -105,13 +87,7 @@ function CalendarComponent(props) {
           <thead>
             {daysOfWeek.map((day, index) => (
               <tr key={index}>
-                <th
-                  className={
-                    isActiveDoctorDay(day) ? "bg-medical text-white" : ""
-                  }
-                >
-                  {day.name}{" "}
-                </th>
+                <th>{day.name}</th>
               </tr>
             ))}
           </thead>

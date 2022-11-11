@@ -29,23 +29,30 @@ export default function Appointments() {
   const [loading, setLoading] = React.useState<boolean>(false);
   const [appointments, setAppointments] = React.useState<any[]>([]);
 
-  React.useEffect(() => {
-    const getDoctorSchedules = async () => {
+  const [pagination, setPagination] = React.useState<any>();
+  const [currentPage, setCurrentPage] = React.useState<number>(1);
+
+  React.useMemo(() => {
+    (async () => {
       try {
         setLoading(true);
-        const { data } = await api.get(
-          `/doctors/${profile?.id}/${selectedLocation.id}/schedules?initial_date=1999-01-01&final_date=3250-01-01`
+
+        const response = await api.get(
+          `/appointments/${profile?.id}/${selectedLocation.id}?page=${currentPage}`
         );
 
-        setAppointments(data.response);
+        console.log(response.data);
+
+        const { data, meta } = response.data.response;
+
+        setPagination(meta);
+        setAppointments(data);
       } catch (err) {
         showAlert({ open: true, type: "danger", message: err });
       } finally {
         setLoading(false);
       }
-    };
-
-    getDoctorSchedules();
+    })();
   }, [profile, selectedLocation, showAlert]);
 
   return (
@@ -125,9 +132,7 @@ export default function Appointments() {
             </>
           ) : loading ? (
             <div className="text-center py-4 text-dark">
-              <Spinner animation="border" role="status" size="lg">
-                <span className="visually-hidden">Carregando...</span>
-              </Spinner>
+              <Spinner animation="border" role="status" size="lg" />
             </div>
           ) : (
             <div className="text-center py-4 text-sm">

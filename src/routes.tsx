@@ -3,8 +3,8 @@ import { RoutesInterface } from "./interfaces/Routes";
 import Calendar from "./pages/Calendar/Calendar";
 import Appointments from "./pages/Appointments/Appointments";
 import Contributors from "./pages/Contributors/Contributors";
-import LocationPendingLinks from "./pages/LocationPendingLinks/LocationPendingLinks";
-import LocationPatients from "./pages/LocationPatients/LocationPatients";
+import LocationPendingLinks from "./pages/Places/Places";
+import LocationPatients from "./pages/Patients/Patients";
 import Settings from "./pages/Settings/Settings";
 
 const routes: RoutesInterface[] = [

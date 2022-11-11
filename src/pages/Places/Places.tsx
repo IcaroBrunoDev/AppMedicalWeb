@@ -19,14 +19,14 @@ import {
   Badge,
 } from "reactstrap";
 
-import AcceptLink from "../../components/LocationPendingLinks/AcceptLink";
-import RejectLink from "../../components/LocationPendingLinks/RejectLink";
+import AcceptLink from "../../components/Places/AcceptLink";
+import RejectLink from "../../components/Places/RejectLink";
 import { useAlert } from "../../context/AlertProvider";
 import { usePlaces } from "../../context/PlacesProvider";
 
 import api from "../../utils/axios";
 
-export default function LocationPendingLinks() {
+export default function Places() {
   const { showAlert } = useAlert();
   const { selectedLocation } = usePlaces();
 

@@ -11,7 +11,6 @@ import {
   Pagination,
   PaginationItem,
   PaginationLink,
-  Container,
   Row,
   Col,
   Spinner,
@@ -20,7 +19,6 @@ import {
   Badge,
 } from "reactstrap";
 
-import Header from "../../components/Layouts/Header";
 import AcceptLink from "../../components/LocationPendingLinks/AcceptLink";
 import RejectLink from "../../components/LocationPendingLinks/RejectLink";
 import { useAlert } from "../../context/AlertProvider";

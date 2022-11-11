@@ -11,7 +11,6 @@ import {
   Pagination,
   PaginationItem,
   PaginationLink,
-  Container,
   Row,
   Col,
   Spinner,
@@ -19,37 +18,12 @@ import {
   Table,
 } from "reactstrap";
 
-import Header from "../../components/Layouts/Header";
-import { useAlert } from "../../context/AlertProvider";
-
-import api from "../../utils/axios";
-
 export default function LocationPatients() {
-  const { showAlert } = useAlert();
-
-  const [loading, setLoading] = React.useState<boolean>(false);
-  const [pagination, setPagination] = React.useState<any>();
+  const [loading] = React.useState<boolean>(false);
+  const [pagination] = React.useState<any>();
   const [currentPage, setCurrentPage] = React.useState<number>(1);
 
-  const [attendanceLinks, setAttendanceLinks] = React.useState<any[]>([]);
-
-  React.useEffect(() => {
-    const getLocationPatients = async () => {
-      try {
-        setLoading(true);
-
-        const { data } = await api.get(
-          `/location/1/patients?page=${currentPage}`
-        );
-
-        console.log(data);
-      } catch (err) {
-        showAlert({ open: true, type: "danger", message: err });
-      } finally {
-        setLoading(false);
-      }
-    };
-  }, [currentPage]);
+  const [attendanceLinks] = React.useState<any[]>([]);
 
   const handleNextPage = (e: any) => {
     e.preventDefault();

@@ -11,13 +11,11 @@ import {
   Pagination,
   PaginationItem,
   PaginationLink,
-  Container,
   Row,
   Col,
   Spinner,
 } from "reactstrap";
 
-import Header from "../../components/Layouts/Header";
 import NurseList from "../../components/Contributors/AdminNurses";
 import DoctorList from "../../components/Contributors/SpecializedDoctors";
 
@@ -88,7 +86,7 @@ export default function Contributor() {
     };
 
     loadingContributors();
-  }, [refresh, contributorsType, currentPage]);
+  }, [refresh, contributorsType, currentPage, selectedLocation, showAlert]);
 
   const handleContributorsType = (type: ContributorsType) => {
     if (contributorsType !== type) {

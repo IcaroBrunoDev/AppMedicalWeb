@@ -42,14 +42,14 @@ export default function Calendar() {
   const [createSchedule, setCreateSchedule] = React.useState<boolean>(false);
   const [updateComponent, setUpdateComponent] = React.useState<number>(0);
 
-  React.useMemo(() => {
+  React.useEffect(() => {
     (async () => {
       try {
         const initial_date = getMonthFirstDay(currentDate);
         const final_date = getLastMonthDay(currentDate);
 
         const { data } = await api.get(
-          `/doctors/${profile?.id}/${selectedLocation?.id}/schedules?initial_date=${initial_date}&final_date=${final_date}`
+          `/schedules/${profile?.id}/${selectedLocation?.id}?initial_date=${initial_date}&final_date=${final_date}`
         );
 
         if (data.response.length > 0) setSchedules(data.response);

@@ -1,42 +1,37 @@
 import React from "react";
+
+import { Controller, useForm } from "react-hook-form";
 import {
   Button,
   Modal,
   Row,
   Col,
-  Form,
-  Input,
-  FormGroup,
   Spinner,
+  FormGroup,
+  Input,
+  Form,
 } from "reactstrap";
+import { useAlert } from "../../context/AlertProvider";
+import { AlertType } from "../../interfaces/General";
 
-import { Patient } from "../../../interfaces/Profiles";
+import { Schedules } from "../../interfaces/Schedules";
+import { formatHour } from "../../utils/calendar";
+import { EventStatus } from "./ViewMonth/CalendarEvent";
 
-import axios from "../../../utils/axios";
-import { formatHour } from "../../../utils/calendar";
+import axios from "../../utils/axios";
 
-import { useAuth } from "../../../context/AuthProvider";
-import { useAlert } from "../../../context/AlertProvider";
-import { usePlaces } from "../../../context/PlacesProvider";
-import { EventStatus } from "../ViewMonth/CalendarEvent";
-
-import { useForm, Controller } from "react-hook-form";
-
-import PatientSearch from "./CreateForm/PatientSearch";
-import { AlertType } from "../../../interfaces/General";
-
-interface CalendarSchedulingInterface {
-  open: true;
+interface SchedulesDetailsProps {
+  schedule: Schedules;
+  onOpen: boolean;
   onClose: () => void;
-  onRefreshCalendar: () => void;
 }
 
-export default function CalendarScheduling(props: CalendarSchedulingInterface) {
-  const { profile } = useAuth();
+export default function ScheduleDetails({
+  onOpen,
+  onClose,
+  schedule,
+}: SchedulesDetailsProps) {
   const { showAlert } = useAlert();
-  const { selectedLocation } = usePlaces();
-
-  const { open, onClose, onRefreshCalendar } = props;
 
   const {
     handleSubmit,
@@ -44,46 +39,35 @@ export default function CalendarScheduling(props: CalendarSchedulingInterface) {
     formState: { errors },
   } = useForm();
 
+  const { patient, event_name, hour, date, notes, status, id } = schedule;
+
   const [loading, setLoading] = React.useState<boolean>(false);
-
-  const [patientWarning, setPatientWarning] = React.useState<boolean>(false);
-  const [selectedPatient, setSelectedPatient] =
-    React.useState<Patient | null>();
-
-  const handlePatient = (patient: Patient | null) => {
-    setSelectedPatient(patient);
-  };
 
   const onSubmit = async (schedule: any) => {
     try {
-      if (!selectedPatient) {
-        setPatientWarning(true);
-        return;
-      }
-
       const { event_name, date, status, hour, notes } = schedule;
 
       setLoading(true);
-      setPatientWarning(false);
 
-      await axios.post("/schedule-create", {
+      const eventName =
+        event_name !== "" && event_name
+          ? event_name
+          : `Consulta ${patient?.fullname}`;
+
+      await axios.put(`/schedules/${id}`, {
         date,
         status,
         hour,
         notes,
-        doctor_id: profile?.id,
-        patient_id: selectedPatient?.id,
-        attendance_place_id: selectedLocation.id,
-        event_name: event_name ?? `Consulta ${selectedPatient?.fullname}`,
+        event_name: eventName,
       });
 
       showAlert({
         open: true,
         type: AlertType.success,
-        message: "Solicitacão de Atendimento Realizada com Sucesso",
+        message: "Consulta Editada com Sucesso",
       });
 
-      onRefreshCalendar();
       onClose();
     } catch (err) {
       showAlert({ open: true, type: AlertType.danger, message: err });
@@ -93,29 +77,47 @@ export default function CalendarScheduling(props: CalendarSchedulingInterface) {
   };
 
   return (
-    <Modal className="modal-dialog-centered" size="lg" isOpen={open}>
+    <Modal className="modal-dialog-centered" size="lg" isOpen={onOpen}>
       <div className="modal-header border-bottom">
         <h3 className="modal-title" id="modal-title-notification">
-          Agendar Nova Consulta
+          Editar Consulta do(a) {patient.fullname}
         </h3>
       </div>
       <Form onSubmit={handleSubmit(onSubmit)}>
-        <div className="modal-body pt-0 mt-2">
-          <h6 className="heading-small text-muted mb-2">
-            Informações do Paciente
-          </h6>
-          <Row>
+        <div className="modal-body pt-0 mt-3">
+          <h4 className="modal-title my-2">Informações do Paciente</h4>
+
+          <Row className="my-3 pb-2 border-bottom">
             <Col className="m-0" lg="12" sm="12">
-              <PatientSearch
-                patientWarning={patientWarning}
-                handlePatient={handlePatient}
-                selectedPatient={selectedPatient}
-              />
+              <div className="d-flex flex-row justify-content-between  py-1 px- text-sm">
+                <div className="d-flex flex-column justify-content-center align-items-start">
+                  <span className="text-medical mb-2">
+                    Nome:<span className="text-dark"> {patient.fullname}</span>
+                  </span>
+                  <span className="text-medical">
+                    CPF:<span className="text-dark"> {patient.cpf}</span>
+                  </span>
+                </div>
+
+                <div className="d-flex flex-column justify-content-center align-items-end">
+                  <span className="text-medical mb-2">
+                    Nascimento:
+                    <span className="text-dark"> {patient.birthdate}</span>
+                  </span>
+                  <span className="text-medical">
+                    Cartão SUS:
+                    <span className="text-dark">
+                      {" "}
+                      {patient.sus_card ?? "Não Cadastrado"}
+                    </span>
+                  </span>
+                </div>
+              </div>
             </Col>
           </Row>
-          <h6 className="heading-small text-muted mb-3">
-            Informações da Consulta
-          </h6>
+
+          <h4 className="modal-title mb-3">Informações da Consulta</h4>
+
           <Row>
             <Col lg="6">
               <FormGroup>
@@ -126,6 +128,7 @@ export default function CalendarScheduling(props: CalendarSchedulingInterface) {
                   name="date"
                   control={control}
                   rules={{ required: true }}
+                  defaultValue={date}
                   render={({ field }) => (
                     <Input
                       {...field}
@@ -152,6 +155,7 @@ export default function CalendarScheduling(props: CalendarSchedulingInterface) {
                   name="hour"
                   control={control}
                   rules={{ required: true }}
+                  defaultValue={hour}
                   render={({ field }) => (
                     <Input
                       {...field}
@@ -192,6 +196,7 @@ export default function CalendarScheduling(props: CalendarSchedulingInterface) {
                   name="status"
                   control={control}
                   rules={{ required: true }}
+                  defaultValue={status}
                   render={({ field }) => (
                     <Input
                       type="select"
@@ -222,6 +227,7 @@ export default function CalendarScheduling(props: CalendarSchedulingInterface) {
                 <Controller
                   name="event_name"
                   control={control}
+                  defaultValue={event_name}
                   render={({ field }) => (
                     <Input
                       {...field}
@@ -243,6 +249,7 @@ export default function CalendarScheduling(props: CalendarSchedulingInterface) {
                 <Controller
                   name="notes"
                   control={control}
+                  defaultValue={notes}
                   render={({ field }) => (
                     <Input
                       {...field}
@@ -267,7 +274,7 @@ export default function CalendarScheduling(props: CalendarSchedulingInterface) {
                 className="text-white"
               />
             ) : (
-              "Agendar Consulta"
+              "Editar Consulta"
             )}
           </Button>
           <Button

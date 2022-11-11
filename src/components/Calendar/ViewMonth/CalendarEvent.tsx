@@ -1,6 +1,7 @@
 import * as React from "react";
+import { Schedules } from "../../../interfaces/Schedules";
 
-import CalendarViewSchedule from "../Schedules/ViewSchedule";
+import CalendarViewSchedule from "../ScheduleDetails";
 
 export enum EventStatus {
   confirmed = "CONFIRMED",
@@ -8,16 +9,14 @@ export enum EventStatus {
   canceled = "CANCELED",
 }
 
-interface CalendarEvent {
-  status: EventStatus;
-  event_name: string;
-  hour: string;
+interface CalendarEventInterface {
+  schedule: Schedules;
 }
 
-export default function CalendarEvent(props: CalendarEvent) {
-  const { status, event_name, hour } = props;
+export default function CalendarEvent({ schedule }: CalendarEventInterface) {
+  const { status, event_name, hour } = schedule;
 
-  const [eventModal, setEventModal] = React.useState(false);
+  const [eventModal, setEventModal] = React.useState<boolean>(false);
 
   const markerBackground = (status: EventStatus) => {
     switch (status) {
@@ -57,7 +56,7 @@ export default function CalendarEvent(props: CalendarEvent) {
 
       {eventModal && (
         <CalendarViewSchedule
-          {...props}
+          schedule={schedule}
           onOpen={eventModal}
           onClose={() => setEventModal(false)}
         />

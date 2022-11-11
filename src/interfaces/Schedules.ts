@@ -1,3 +1,4 @@
+import { EventStatus } from "../components/Calendar/ViewMonth/CalendarEvent";
 import { Doctor } from "./Doctors";
 
 export interface Schedules {
@@ -9,6 +10,6 @@ export interface Schedules {
   id: number;
   notes: string | null;
   patient: any;
-  status: string;
+  status: EventStatus;
   updated_at: string;
 }

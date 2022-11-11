@@ -2,7 +2,6 @@ import React from "react";
 import {
   Input,
   FormGroup,
-  FormFeedback,
   InputGroup,
   InputGroupAddon,
   InputGroupText,
@@ -26,8 +25,6 @@ export default function PatientSearch(props: PatientSearchInterface) {
   const { showAlert } = useAlert();
 
   const { patientWarning, selectedPatient, handlePatient } = props;
-
-  console.log(patientWarning);
 
   const [loading, setLoading] = React.useState<boolean>(false);
 

@@ -7,14 +7,14 @@ import { filterMonthEvents } from "../../../utils/calendar";
 
 import { Schedules } from "../../../interfaces/Schedules";
 
-interface CalendarComponent {
+interface CalendarComponentInterface {
   schedules: Schedules[];
   currentDate: Date;
   initialDayIndex: number;
   totalDaysInMonth: number;
 }
 
-function CalendarComponent(props: CalendarComponent) {
+function CalendarComponent(props: CalendarComponentInterface) {
   const { schedules, currentDate, initialDayIndex, totalDaysInMonth } = props;
 
   const renderCorrectDays = (currentIndex: number) => {
@@ -57,8 +57,8 @@ function CalendarComponent(props: CalendarComponent) {
             schedules,
             currentDate,
             currentIndex + 1 - initialDayIndex
-          ).map((event, index) => (
-            <CalendarEvent key={index} {...event} />
+          ).map((schedule, index) => (
+            <CalendarEvent key={index} schedule={schedule} />
           ))}
         </td>
       </tr>

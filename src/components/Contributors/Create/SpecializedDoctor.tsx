@@ -12,7 +12,6 @@ import {
 
 import api from "../../../utils/axios";
 
-import { create_doctor } from "../../../utils/constants";
 import { phoneFormatter } from "../../../utils/formatters";
 import { ExceptionMessages } from "../../../utils/messages";
 import { getStoragedProfile } from "../../../utils/caches";

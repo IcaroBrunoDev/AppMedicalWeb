@@ -2,7 +2,7 @@ import React from "react";
 import { Col, Row } from "reactstrap";
 import { formatCurrentDate } from "../../utils/calendar";
 
-interface CalendarHeader {
+interface CalendarHeaderInterface {
   currentDate: Date;
   setCurrentDate: (date: Date) => void;
   handlePrevMonth: () => void;
@@ -11,7 +11,7 @@ interface CalendarHeader {
   setCreateNewSchedule: () => void;
 }
 
-export default function CalendarHeader(props: CalendarHeader) {
+export default function CalendarHeader(props: CalendarHeaderInterface) {
   const {
     currentDate,
     setCurrentDate,

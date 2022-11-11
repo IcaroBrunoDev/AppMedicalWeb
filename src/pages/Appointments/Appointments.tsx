@@ -8,10 +8,6 @@ import {
   DropdownItem,
   UncontrolledDropdown,
   DropdownToggle,
-  Pagination,
-  PaginationItem,
-  PaginationLink,
-  Container,
   Row,
   Col,
   Spinner,
@@ -19,7 +15,6 @@ import {
   Table,
 } from "reactstrap";
 
-import Header from "../../components/Layouts/Header";
 import { useAlert } from "../../context/AlertProvider";
 import { useAuth } from "../../context/AuthProvider";
 import { usePlaces } from "../../context/PlacesProvider";
@@ -51,7 +46,7 @@ export default function Appointments() {
     };
 
     getDoctorSchedules();
-  }, []);
+  }, [profile, selectedLocation, showAlert]);
 
   return (
     <Row>

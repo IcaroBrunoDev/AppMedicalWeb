@@ -41,8 +41,6 @@ export default function Appointments() {
           `/appointments/${profile?.id}/${selectedLocation.id}?page=${currentPage}`
         );
 
-        console.log(response.data);
-
         const { data, meta } = response.data.response;
 
         setPagination(meta);

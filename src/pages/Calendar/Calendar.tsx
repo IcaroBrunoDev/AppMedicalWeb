@@ -59,6 +59,11 @@ export default function Calendar() {
     })();
   }, [profile, selectedLocation, currentDate, updateComponent, showAlert]);
 
+  const handleCurrentDate = (date: Date) => {
+    setCurrentDate(date);
+    handleMonthIndex(date);
+  };
+
   const handlePrevMonth = () => {
     const prevMonth = getPrevMonth(currentDate);
     setCurrentDate(prevMonth);
@@ -71,7 +76,7 @@ export default function Calendar() {
     handleMonthIndex(nextMonth);
   };
 
-  const handleMonthIndex = (currentDate: any) => {
+  const handleMonthIndex = (currentDate: Date) => {
     setInitialDayIndex(getMonthFirstDayIndex(currentDate));
     setTotalDaysInMonth(calcTotalDaysInMonth(currentDate));
   };
@@ -88,7 +93,7 @@ export default function Calendar() {
             <CardHeader className="border-0">
               <CalendarHeader
                 currentDate={currentDate}
-                setCurrentDate={setCurrentDate}
+                setCurrentDate={handleCurrentDate}
                 handlePrevMonth={handlePrevMonth}
                 handleNextMonth={handleNextMonth}
                 schedulesLength={schedules.length}

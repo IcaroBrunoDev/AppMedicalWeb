@@ -1,28 +1,21 @@
 import * as React from "react";
 
-import {
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  Media,
-  Table,
-  UncontrolledDropdown,
-} from "reactstrap";
+import { Media, Table } from "reactstrap";
 
 import CreateAvailability from "../Availability/CreateAvailability";
 
-import { ReadDoctors } from "../../interfaces/Profiles";
+// import { ReadDoctors } from "../../interfaces/Profiles";
 
 export default function DoctorList({ contributors }: object | any) {
-  const [availability, setAvailability] = React.useState<any>(false);
+  // const [availability, setAvailability] = React.useState<boolean>(false);
 
-  const toggleCreateModal = (
-    e: React.MouseEvent<HTMLElement>,
-    doctor: { doctor: ReadDoctors }
-  ) => {
-    e.preventDefault();
-    setAvailability({ open: true, doctor: doctor.doctor });
-  };
+  // const toggleCreateModal = (
+  //   e: React.MouseEvent<HTMLElement>,
+  //   doctor: { doctor: ReadDoctors }
+  // ) => {
+  //   e.preventDefault();
+  //   setAvailability({ open: true, doctor: doctor.doctor });
+  // };
 
   return (
     <>
@@ -38,7 +31,7 @@ export default function DoctorList({ contributors }: object | any) {
           </tr>
         </thead>
         {contributors.map((contributor: any, index: any) => (
-          <tbody key={index}>
+          <tbody key={`${contributor.doctor.fullname}_${index}`}>
             <tr>
               <th scope="row">
                 <Media className="align-items-center">
@@ -66,9 +59,9 @@ export default function DoctorList({ contributors }: object | any) {
               <td>
                 <span>{contributor.doctor.phone}</span>
               </td>
-              <td></td>
+              <td>{contributor.doctor.specialtie.name}</td>
               <td className="text-center">
-                <UncontrolledDropdown>
+                {/* <UncontrolledDropdown>
                   <DropdownToggle
                     className="btn-icon-only text-light"
                     href="/"
@@ -101,19 +94,19 @@ export default function DoctorList({ contributors }: object | any) {
                       </DropdownItem>
                     )}
                   </DropdownMenu>
-                </UncontrolledDropdown>
+                </UncontrolledDropdown> */}
               </td>
             </tr>
           </tbody>
         ))}
       </Table>
 
-      {availability.open && (
+      {/* {availability.open && (
         <CreateAvailability
           {...availability}
           onClose={() => setAvailability(false)}
         />
-      )}
+      )} */}
     </>
   );
 }

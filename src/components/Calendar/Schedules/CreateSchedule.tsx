@@ -66,7 +66,7 @@ export default function CalendarScheduling(props: CalendarSchedulingInterface) {
       setLoading(true);
       setPatientWarning(false);
 
-      await axios.post("/schedule-create", {
+      await axios.post("/schedules", {
         date,
         status,
         hour,

@@ -41,7 +41,7 @@ export default function CalendarHeader(props: CalendarHeaderInterface) {
             <Col lg="auto" sm="auto">
               <button
                 onClick={setCreateNewSchedule}
-                className="btn btn-medical  mr-2"
+                className="btn btn-medical mr-2"
               >
                 Cadastrar Nova Consulta
               </button>

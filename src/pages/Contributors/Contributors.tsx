@@ -30,7 +30,7 @@ import { usePlaces } from "../../context/PlacesProvider";
 
 enum ContributorsType {
   admin_nurses = "admin_nurses",
-  specialized_doctors = "specialized_doctors",
+  specialized_doctors = "doctors",
 }
 
 interface ContributorState {
@@ -58,34 +58,36 @@ export default function Contributor() {
     React.useState<ContributorsType>(ContributorsType.specialized_doctors);
 
   React.useEffect(() => {
-    const loadingContributors = async () => {
+    (async () => {
       try {
         setLoading(true);
+
         setContributors([]);
 
         const { data } = await api.get(
-          `locations/${selectedLocation.id}/contributors?filter=all&page=${currentPage}`
+          `places/${selectedLocation.id}/contributors?filter=all&page=${currentPage}`
         );
 
         switch (contributorsType) {
           case ContributorsType.specialized_doctors:
-            setPagination(data.response.specialized_doctors.meta);
-            setContributors(data.response.specialized_doctors.data);
+            setPagination(data.response.doctors.meta);
+            setContributors(data.response.doctors.data);
             break;
 
           case ContributorsType.admin_nurses:
             setPagination(data.response.admin_nurses.meta);
             setContributors(data.response.admin_nurses.data);
             break;
+
+          default:
+            return;
         }
       } catch (err) {
         showAlert({ open: true, type: "danger", message: err });
       } finally {
         setLoading(false);
       }
-    };
-
-    loadingContributors();
+    })();
   }, [refresh, contributorsType, currentPage, selectedLocation, showAlert]);
 
   const handleContributorsType = (type: ContributorsType) => {
@@ -221,6 +223,7 @@ export default function Contributor() {
                     >
                       {new Array(pagination.last_page).fill(1).map((_, key) => (
                         <PaginationItem
+                          key={currentPage + "_" + key}
                           active={currentPage === key + 1 ?? false}
                         >
                           <PaginationLink

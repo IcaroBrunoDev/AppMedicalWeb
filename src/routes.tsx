@@ -1,10 +1,8 @@
 import { RoutesInterface } from "./interfaces/Routes";
 
 import Calendar from "./pages/Calendar/Calendar";
-import Appointments from "./pages/Appointments/Appointments";
 import Contributors from "./pages/Contributors/Contributors";
 import LocationPendingLinks from "./pages/Places/Places";
-import LocationPatients from "./pages/Patients/Patients";
 import Settings from "./pages/Settings/Settings";
 
 const routes: RoutesInterface[] = [
@@ -14,14 +12,6 @@ const routes: RoutesInterface[] = [
     name: "Agenda Médica",
     icon: "fa-solid fa-calendar-week text-medical",
     component: Calendar,
-    layout: "/admin",
-  },
-  {
-    show: true,
-    path: "/consultas",
-    name: "Minhas Consultas",
-    icon: "fa-solid fa-file-signature text-medical",
-    component: Appointments,
     layout: "/admin",
   },
   {
@@ -38,14 +28,6 @@ const routes: RoutesInterface[] = [
     name: "Vinculos Pendentes",
     icon: "fa-solid fa-link text-medical",
     component: LocationPendingLinks,
-    layout: "/admin",
-  },
-  {
-    show: true,
-    path: "/pacientes",
-    name: "Pacientes da Unidade",
-    icon: "fa-solid fa-hospital-user text-medical",
-    component: LocationPatients,
     layout: "/admin",
   },
   {

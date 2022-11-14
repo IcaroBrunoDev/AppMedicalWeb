@@ -89,9 +89,9 @@ export default function SignForm() {
         </InputGroup>
       </FormGroup>
       <div className="text-center">
-        <Button className="my-4" color="secondary" type="submit">
+        <Button className="my-4" color="medical" type="submit">
           {loading ? (
-            <Spinner animation="border" role="status" size="sm" />
+            <Spinner animation="border" role="status" size="sm" color="#fff" />
           ) : (
             "Entrar"
           )}

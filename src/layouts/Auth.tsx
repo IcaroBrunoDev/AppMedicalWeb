@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 import { Container, Card, CardBody, Row, Col } from "reactstrap";
 
@@ -25,11 +25,12 @@ export default function Auth() {
               <Col lg="5" md="6">
                 <img
                   width={185}
-                  height={100}
-                  alt="medico-aqui"
+                  alt="MedicalScheduleLogo"
                   src={require("../assets/img/brand/logo.png")}
                 />
-                <p className="text-lead text-black mt-4">Painel Médico</p>
+                <p className="text-lead text-black mt-4">
+                  Medical Schedule App
+                </p>
               </Col>
             </Row>
           </div>
@@ -48,7 +49,7 @@ export default function Auth() {
               </CardBody>
             </Card>
             <Row className="mt-3">
-              <Col xs="6">
+              {/* <Col xs="6">
                 <Link
                   to={{
                     pathname: "/forgot-password",
@@ -57,7 +58,7 @@ export default function Auth() {
                 >
                   <small>Esqueceu sua senha?</small>
                 </Link>
-              </Col>
+              </Col> */}
             </Row>
           </Col>
         </Row>

@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { Media, Table } from "reactstrap";
 
-import CreateAvailability from "../Availability/CreateAvailability";
+// import CreateAvailability from "../Availability/CreateAvailability";
 
 // import { ReadDoctors } from "../../interfaces/Profiles";
 

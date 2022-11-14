@@ -77,7 +77,7 @@ export default function Sidebar({ routes }: SidebarProps) {
 
         {/* Brand */}
         <NavbarBrand className="pt-0 text-medical">
-          <span>AppMédicoWeb</span>
+          <span>Medical Schedule</span>
         </NavbarBrand>
 
         <Nav className="align-items-center d-md-none">
@@ -125,7 +125,7 @@ export default function Sidebar({ routes }: SidebarProps) {
             <Row>
               <Col className="collapse-close" xs="6">
                 <NavbarBrand className="pt-0 text-medical">
-                  <span>AppMédicoWeb</span>
+                  <span>Medical Schedule</span>
                 </NavbarBrand>
               </Col>
               <Col className="collapse-close" xs="6">
